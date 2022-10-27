@@ -2,7 +2,6 @@ package models
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/jackc/pgx/v4"
 )
@@ -16,8 +15,19 @@ type Donate struct {
 
 // Save ...
 func (d *Donate) Save(ctx context.Context, db *pgx.Conn) error {
-	fmt.Println("uid: ", d.UID, "; pid: ", d.PID, "; val: ", d.Val, ";")
-	return nil // TODO
+	_, err := db.Exec(
+		ctx,
+		`
+			INSERT INTO donates
+				(uid, pid, val)
+				VALUES ($1, $2, $3);
+		`,
+		d.UID, d.PID, d.Val,
+	)
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 func GetDonates() ([]Donate, error) {
