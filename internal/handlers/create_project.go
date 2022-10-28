@@ -33,5 +33,7 @@ func (impl *Implementation) CreateProject() gin.HandlerFunc {
 			c.String(http.StatusInternalServerError, err.Error())
 			return
 		}
+
+		c.Status(http.StatusOK)
 	}
 }

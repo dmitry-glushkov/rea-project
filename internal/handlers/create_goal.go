@@ -1,7 +1,6 @@
 package handlers
 
 import (
-	"fmt"
 	"net/http"
 	"ucheba/back/internal/models"
 
@@ -29,15 +28,12 @@ func (impl *Implementation) CreateGoal() gin.HandlerFunc {
 			Target:  r.Target,
 			DueDate: r.DueDate,
 		}
-
-		fmt.Println("HERE")
-
-		fmt.Println(goal)
-
 		err = goal.Save(c.Request.Context(), impl.DB)
 		if err != nil {
 			c.String(http.StatusInternalServerError, err.Error())
 			return
 		}
+
+		c.Status(http.StatusOK)
 	}
 }

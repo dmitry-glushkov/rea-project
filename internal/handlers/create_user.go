@@ -33,6 +33,7 @@ func (impl *Implementation) CreateUser() gin.HandlerFunc {
 			c.String(http.StatusInternalServerError, err.Error())
 			return
 		}
+
 		c.Status(http.StatusOK)
 	}
 }
