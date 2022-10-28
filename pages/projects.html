@@ -51,6 +51,33 @@
         - name (небольшая строка названия проекта), 
         - sum/target: target - цель проекта по деньгам, sum - собрано на текущий момент
 
-    Вся информация будет приходить из ручки /api/projects
+    Вся информация будет приходить из ручки /api/projects в виде:
+        {
+            "projects_info":
+            [
+            {
+                "pid": какой-то id (число)
+                "owner": "owner_name",
+                "project_name": "imya proekta"
+                "sum": число
+                "target": число
+            },
+            {
+                "pid": какой-то id (число)
+                "owner": "owner_name",
+                "project_name": "imya proekta"
+                "sum": число
+                "target": число
+            },
+            {
+                "pid": какой-то id (число)
+                "owner": "owner_name",
+                "project_name": "imya proekta"
+                "sum": число
+                "target": число
+            },
+            ...
+            ]
+        }
     + возможность по клику на name перейти на страницу /project?pid=*тут взять id из проекта*
 -->
