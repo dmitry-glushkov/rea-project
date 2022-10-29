@@ -1,23 +1,12 @@
 <html>
     <head>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-        <style>
-            table, th, td {
-                border: 1px solid white;
-                border-collapse: collapse;
-              }
-              th, td {
-                background-color: #96D4D4;
-              }
-              th {
-                    text-align: center;
-                }
-        </style>
     </head>
     <body>
 
     <div>
-        <form method="post">
+        <h3 style="text-align: center;">создать новый проект</h3>
+        <form method="post" style="text-align: center;">
             <label for="ProjectNameInput">название проекта</label>
             <input id="ProjectNameInput" type="text"/>
 
@@ -55,7 +44,7 @@
                     project = projects[i];
                     tr = '<tr id="projectId_'+project.pid+'">' +
                         '<td>'+project.owner+'</td>' +
-                        '<td>'+project.project_name+'</td>' +
+                        '<td>' + '<a href="/project?pid='+project.pid+'"">'+project.project_name+'</a>'+'</td>'+
                         '<td>'+project.desc+'</td>' +
                         '<td>'+project.sum+'/'+project.target+'</td>' +
                         '</tr>';
@@ -76,7 +65,7 @@
         })
         
     </script>
-    
+
     <style>
         table {
             border: 1px solid black; /* Рамка вокруг таблицы */
@@ -98,6 +87,9 @@
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
+        }
+        a {
+            text-decoration: none;
         }
     </style>
     </body>
