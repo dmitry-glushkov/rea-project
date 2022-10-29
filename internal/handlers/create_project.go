@@ -1,7 +1,6 @@
 package handlers
 
 import (
-	"fmt"
 	"net/http"
 	"ucheba/back/internal/models"
 
@@ -25,8 +24,6 @@ func (impl *Implementation) CreateProject() gin.HandlerFunc {
 			c.String(http.StatusBadRequest, err.Error())
 			return
 		}
-
-		fmt.Println(r)
 
 		project := models.Project{
 			Name:  r.Name,
