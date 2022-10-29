@@ -13,29 +13,40 @@
                 }
         </style>
     </head>
-
-    <Body>
+    <body>
     <h2> Список проектов </h2>
+    
+    <ul id="projects"></ul>
+    
 
-        <table style="width:100%">
-            <caption>Проекты</caption>            
-            <tr>
-              <th>Владелец</th>
-              <th>Наименование проекта</th>
-              <th>Сумма/Цель</th>
-            </tr>
-            <tr>
-              <td>Владелец1</td>
-              <td>Проект1</td>
-              <td>100/200</td>
-            </tr>
-            <tr>
-                <td>Владелец2</td>
-                <td>Проект2</td>
-                <td>100/300</td>
-            </tr>
-          </table>
-    </Body>
+
+    <script>
+        var ul = document.getElementById("projects");
+        var list = document.createDocumentFragment();
+        fetch('/api/projects')
+        .then((response) => {
+            return response.json()
+        })
+        .then((data) => {
+            let projects = data.projects_info;
+
+            projects.map(function(project) {
+                let li = document.createElement('li');
+                let owner = document.createElement('h2');
+                let proj_name = document.createElement('span');
+                owner.innerHTML = `${project.owner}`;
+                proj_name.innerHTML = `${project.project_name}`;
+                li.appendChild(owner);
+                li.appendChild(proj_name);
+                list.appendChild(li);
+            });
+            ul.appendChild(list);
+        });
+        
+        
+        
+    </script>
+    </body>
 </html>
 
 <!-- 
@@ -80,4 +91,10 @@
             ]
         }
     + возможность по клику на name перейти на страницу /project?pid=*тут взять id из проекта*
+
+
+        1) встроить скрипт в этот html (console.log("text"))
+        2) отправлять запросы (Jquery?) localhost:8080/api/projects  "Запрос отправляется через fetch 
+        3) после получения ответа от запроса из п.2 распарсить ответ json, проитерироваться 
+
 -->
