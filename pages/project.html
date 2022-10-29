@@ -1,5 +1,19 @@
 <html>
-    <h1> project </h1>
+    <head>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    </head>
+
+    <body>
+        
+
+        <script type="application/javascript">
+            const urlParams = new URLSearchParams(window.location.search)
+            const pid = urlParams.get("pid")
+            $.get("/api/project?pid="+pid, function(data) {
+                console.log(data);
+            });
+        </script>
+    </body>
 </html>
 
 <!-- 
