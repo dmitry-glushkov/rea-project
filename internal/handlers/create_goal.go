@@ -7,16 +7,18 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+type CreateGoalRequest struct {
+	PID     int `json:"pid"`
+	Target  int `json:"target"`
+	DueDate int `json:"due_date"`
+}
+
+type CreateGoalResponse struct{}
+
 // CreateGoal ...
 func (impl *Implementation) CreateGoal() gin.HandlerFunc {
-	type req struct {
-		PID     int `json:"pid"`
-		Target  int `json:"target"`
-		DueDate int `json:"due_date"`
-	}
-
 	return func(c *gin.Context) {
-		r := &req{}
+		r := &CreateGoalRequest{}
 		err := c.Bind(r)
 		if err != nil {
 			c.String(http.StatusBadRequest, err.Error())
@@ -34,6 +36,6 @@ func (impl *Implementation) CreateGoal() gin.HandlerFunc {
 			return
 		}
 
-		c.Status(http.StatusOK)
+		c.JSON(http.StatusOK, CreateGoalResponse{})
 	}
 }

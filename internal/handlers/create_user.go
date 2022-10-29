@@ -7,16 +7,18 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+type CreateUserRequest struct {
+	Login string `json:"login"`
+	Pass  string `json:"pass"`
+	Role  string `json:"role"`
+}
+
+type CreateUserResponse struct{}
+
 // CreateUser ...
 func (impl *Implementation) CreateUser() gin.HandlerFunc {
-	type req struct {
-		Login string `json:"login"`
-		Pass  string `json:"pass"`
-		Role  string `json:"role"`
-	}
-
 	return func(c *gin.Context) {
-		r := &req{}
+		r := &CreateUserRequest{}
 		err := c.Bind(r)
 		if err != nil {
 			c.String(http.StatusBadRequest, err.Error())
@@ -34,6 +36,6 @@ func (impl *Implementation) CreateUser() gin.HandlerFunc {
 			return
 		}
 
-		c.Status(http.StatusOK)
+		c.JSON(http.StatusOK, CreateUserResponse{})
 	}
 }

@@ -6,13 +6,18 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func GetLKInfo() gin.HandlerFunc {
-	type req struct {
-	}
+type GetLKRequest struct {
+	// TODO
+}
 
+type GetLKResponse struct {
+	// TODO
+}
+
+func GetLK() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		r := &req{}
-		err := c.BindJSON(r)
+		r := &GetLKRequest{}
+		err := c.Bind(r)
 		if err != nil {
 			c.String(http.StatusBadRequest, err.Error())
 			return
@@ -24,5 +29,7 @@ func GetLKInfo() gin.HandlerFunc {
 		// 	c.String(http.StatusInternalServerError, err.Error())
 		// 	return
 		// }
+
+		c.JSON(http.StatusOK, GetLKResponse{})
 	}
 }

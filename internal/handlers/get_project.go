@@ -7,13 +7,17 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func (impl *Implementation) GetProject() gin.HandlerFunc {
-	type req struct {
-		PID int `json:"pid" form:"pid"`
-	}
+type GetProjectRequest struct {
+	PID int `json:"pid" form:"pid"`
+}
 
+type GetProjectResponse struct {
+	Project ProjectInfo `json:"project_info"`
+}
+
+func (impl *Implementation) GetProject() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		r := &req{}
+		r := &GetProjectRequest{}
 		err := c.Bind(r)
 		if err != nil {
 			c.String(http.StatusBadRequest, err.Error())
@@ -27,6 +31,10 @@ func (impl *Implementation) GetProject() gin.HandlerFunc {
 			return
 		}
 
-		c.JSON(http.StatusOK, project)
+		c.JSON(http.StatusOK, GetProjectResponse{
+			Project: ProjectInfo{
+				PID: project.ID,
+			},
+		})
 	}
 }

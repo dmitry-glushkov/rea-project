@@ -7,11 +7,14 @@ import (
 )
 
 type GetProjectsRequest struct {
+	Page  int `json:"page" form:"page"`
+	Limit int `json:"limit" form:"limit"`
 }
 
 type ProjectInfo struct {
 	PID         int    `json:"pid"`
 	Owner       string `json:"owner"`
+	Desc        string `json:"desc"`
 	ProjectName string `json:"project_name"`
 	Sum         int    `json:"sum"`
 	Target      int    `json:"target"`
@@ -22,13 +25,8 @@ type GetProjectsResponse struct {
 }
 
 func (impl *Implementation) GetProjects() gin.HandlerFunc {
-	type req struct {
-		Page  int `json:"page" form:"page"`
-		Limit int `json:"limit" form:"limit"`
-	}
-
 	return func(c *gin.Context) {
-		r := &req{}
+		r := &GetProjectsRequest{}
 		err := c.Bind(r)
 		if err != nil {
 			c.String(http.StatusBadRequest, err.Error())

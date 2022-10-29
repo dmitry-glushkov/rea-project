@@ -7,16 +7,18 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+type CreateProjectRequest struct {
+	Name    string `json:"name"`
+	Desc    string `json:"desc"`
+	OwnerID int    `json:"owner_id"`
+}
+
+type CreateProjectResponse struct{}
+
 // CreateProject ...
 func (impl *Implementation) CreateProject() gin.HandlerFunc {
-	type req struct {
-		Name    string `json:"name"`
-		Desc    string `json:"desc"`
-		OwnerID int    `json:"owner_id"`
-	}
-
 	return func(c *gin.Context) {
-		r := &req{}
+		r := &CreateProjectRequest{}
 		err := c.Bind(r)
 		if err != nil {
 			c.String(http.StatusBadRequest, err.Error())
@@ -34,6 +36,6 @@ func (impl *Implementation) CreateProject() gin.HandlerFunc {
 			return
 		}
 
-		c.Status(http.StatusOK)
+		c.JSON(http.StatusOK, CreateProjectResponse{})
 	}
 }
