@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"fmt"
 	"net/http"
 	"ucheba/back/internal/models"
 
@@ -8,9 +9,9 @@ import (
 )
 
 type CreateProjectRequest struct {
-	Name    string `json:"name"`
-	Desc    string `json:"desc"`
-	OwnerID int    `json:"owner_id"`
+	Name  string `json:"name"`
+	Desc  string `json:"desc"`
+	Owner string `json:"owner"`
 }
 
 type CreateProjectResponse struct{}
@@ -19,16 +20,18 @@ type CreateProjectResponse struct{}
 func (impl *Implementation) CreateProject() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		r := &CreateProjectRequest{}
-		err := c.Bind(r)
+		err := c.BindJSON(r)
 		if err != nil {
 			c.String(http.StatusBadRequest, err.Error())
 			return
 		}
 
+		fmt.Println(r)
+
 		project := models.Project{
-			Name:    r.Name,
-			Desc:    r.Desc,
-			OwnerID: r.OwnerID,
+			Name:  r.Name,
+			Desc:  r.Desc,
+			Owner: r.Owner,
 		}
 		err = project.Save(c.Request.Context(), impl.DB)
 		if err != nil {

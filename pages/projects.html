@@ -1,5 +1,6 @@
 <html>
     <head>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
         <style>
             table, th, td {
                 border: 1px solid white;
@@ -14,36 +15,61 @@
         </style>
     </head>
     <body>
-    <h2> Список проектов </h2>
-    
-    <ul id="projects"></ul>
-    
+
+    <div>
+        <form method="post">
+            <label for="ProjectNameInput">название проекта</label>
+            <input id="ProjectNameInput" type="text"/>
+
+            <label for="ProjectOwnerInput">владелец</label>
+            <input id="ProjectOwnerInput" type="text"/>
+
+            <label for="ProjectDescInput">описание проекта</label>
+            <input id="ProjectDescInput" type="text"/>
+
+            <input type="button" value="Submit" id="SubmitBtn">
+        </form>
+    </div>
 
 
-    <script>
+    <div>
+        <h2> Список проектов </h2>
+        <ul id="projects"></ul>
+    </div>
+
+    <script type="application/javascript">
         var ul = document.getElementById("projects");
         var list = document.createDocumentFragment();
         fetch('/api/projects')
-        .then((response) => {
-            return response.json()
-        })
-        .then((data) => {
-            let projects = data.projects_info;
+            .then((response) => {
+                return response.json()
+            })
+            .then((data) => {
+                let projects = data.projects_info;
 
-            projects.map(function(project) {
-                let li = document.createElement('li');
-                let owner = document.createElement('h2');
-                let proj_name = document.createElement('span');
-                owner.innerHTML = `${project.owner}`;
-                proj_name.innerHTML = `${project.project_name}`;
-                li.appendChild(owner);
-                li.appendChild(proj_name);
-                list.appendChild(li);
+                projects.map(function(project) {
+                    let li = document.createElement('li');
+                    let owner = document.createElement('span');
+                    let proj_name = document.createElement('h2');
+                    owner.innerHTML = `${project.owner}`;
+                    proj_name.innerHTML = `${project.project_name}`;
+                    li.appendChild(proj_name);
+                    li.appendChild(owner);
+                    list.appendChild(li);
+                });
+                ul.appendChild(list);
             });
-            ul.appendChild(list);
-        });
         
-        
+        $('#SubmitBtn').on('click', function(){
+            let project_input = {
+                "name": $("#ProjectNameInput").val(),
+                "desc": $("#ProjectDescInput").val(),
+                "owner": $("#ProjectOwnerInput").val(),
+            };
+            $.post("/api/create_project", JSON.stringify(project_input), function(data){
+                console.log(data);
+            });
+        })
         
     </script>
     </body>

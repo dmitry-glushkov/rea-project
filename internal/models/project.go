@@ -9,27 +9,27 @@ import (
 
 // Project ...
 type Project struct {
-	ID      int
-	Name    string
-	Desc    string
-	OwnerID int
+	ID    int
+	Name  string
+	Desc  string
+	Owner string
 }
 
 // Save ...
 func (p *Project) Save(ctx context.Context, db *pgx.Conn) error {
-	_, err := db.Exec(
-		ctx,
-		`
-			INSERT INTO projects
-				(name, desc, owner_id)
-				VALUES ($1, $2, $3);	
-		`,
-		p.Name, p.Desc, p.OwnerID,
-	)
-	if err != nil {
-		err = fmt.Errorf("...: %w", err)
-		return err
-	}
+	// _, err := db.Exec(
+	// 	ctx,
+	// 	`
+	// 		INSERT INTO projects
+	// 			(name, desc, owner_id)
+	// 			VALUES ($1, $2, $3);
+	// 	`,
+	// 	p.Name, p.Desc, p.Owner,
+	// )
+	// if err != nil {
+	// 	err = fmt.Errorf("...: %w", err)
+	// 	return err
+	// }
 
 	return nil
 }
