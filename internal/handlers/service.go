@@ -43,20 +43,35 @@ func (impl *Implementation) registerHTTP() {
 	impl.Router.GET("/project", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "project.html", gin.H{})
 	})
-	impl.Router.GET("/donators", func(c *gin.Context) {
-		c.HTML(http.StatusOK, "donators.html", gin.H{})
+	impl.Router.GET("/investors", func(c *gin.Context) {
+		c.HTML(http.StatusOK, "investors.html", gin.H{})
 	})
 	impl.Router.GET("/lk", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "lk.html", gin.H{})
 	})
-	impl.Router.GET("/donates", func(c *gin.Context) {
-		c.HTML(http.StatusOK, "donates.html", gin.H{})
+	impl.Router.GET("/investements", func(c *gin.Context) {
+		c.HTML(http.StatusOK, "investements.html", gin.H{})
 	})
 	impl.Router.GET("/goals", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "goals.html", gin.H{})
 	})
 	impl.Router.GET("/crm", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "crm.html", gin.H{})
+	})
+	impl.Router.GET("/contracts", func(c *gin.Context) {
+		c.HTML(http.StatusOK, "contracts.html", gin.H{})
+	})
+	impl.Router.GET("/expertise", func(c *gin.Context) {
+		c.HTML(http.StatusOK, "expertise.html", gin.H{})
+	})
+	impl.Router.GET("/innovators", func(c *gin.Context) {
+		c.HTML(http.StatusOK, "innovators.html", gin.H{})
+	})
+	impl.Router.GET("/performers", func(c *gin.Context) {
+		c.HTML(http.StatusOK, "performers.html", gin.H{})
+	})
+	impl.Router.GET("/risks", func(c *gin.Context) {
+		c.HTML(http.StatusOK, "risks.html", gin.H{})
 	})
 }
 
