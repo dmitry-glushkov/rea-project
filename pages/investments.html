@@ -6,8 +6,9 @@
     <body>
         <div style="padding: 2em 0;">
             <h2 style="text-align: center;"> 
-                <div id="projectHeader">Инвестиции в проект</div>
+                <div id="projectHeader">Инвестиции в проект<br></div>
             </h2>
+            
         </div>
         <br>
 
@@ -15,12 +16,21 @@
             <form method="post" style="text-align: center;">    
                 <label for="ProjectInvestorInput">Имя инвестора</label>
                 <input id="ProjectInvestorInput" type="text"/>
+                
     
-                <label for="ProjectSumInput">описание проекта</label>
+                <label for="ProjectSumInput">Сумма вложения</label>
                 <input id="ProjectSumInput" type="text"/>
     
-                <input type="button" value="Submit" id="SubmitBtn">
+                <input type="button" value="Подтвердить" id="SubmitBtn">
             </form>
+        </div>
+        
+        <div>
+            <hr>
+            <div id="projectTarget" style="text-align: center;">
+                Собрано/Цель
+                <br>
+            </div>
         </div>
 
         <div style="padding: 2em 0;">
@@ -62,11 +72,51 @@
                     investment = investments[i];
                     tr = '<tr id="investmentId_'+investment.id+'">' +
                         '<td>'+investment.uid+'</td>' +
-                        '<td>'+investment.sum+'</td>' +
+                        '<td>'+investment.val+'</td>' +
                         '</tr>';
                     $('#investmentsTableBody').append(tr);
                 }
             }
          });
+
+         $('#SubmitBtn').on('click', function(){
+            let investment_input = {
+                "uid": $("#ProjectInvestorInput").val(),
+                // "pid": $("#ProjectDescInput").val(),
+                "val": $("#ProjectSumInput").val(),
+            };
+            $.post("/api/create_investment", JSON.stringify(investment_input), function(data){
+                console.log(data);
+            });
+        })
+
     </script>
+
+    <style>
+        table {
+            border: 1px solid black; /* Рамка вокруг таблицы */
+            border-collapse: collapse; /* Отображать только одинарные линии */
+            width: 100%;
+            table-layout: fixed;
+        }
+        th {
+            text-align: center; /* Выравнивание по левому краю */
+            padding: 0 1em;
+            border: 1px solid black; /* Граница вокруг ячеек */
+            background-color: white;
+        }
+        td {
+            text-align: center;
+            border: 1px solid black;
+            background-color: white;
+            padding: 0 1em;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        a {
+            text-decoration: none;
+        }
+    </style>
+
 </html>
