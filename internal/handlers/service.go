@@ -24,13 +24,13 @@ func NewImplementation(db *pgx.Conn) Implementation {
 
 func (impl *Implementation) registerHTTP() {
 	// GET
-	impl.Router.GET("/api/donators", impl.GetDonators())
+	impl.Router.GET("/api/investors", impl.GetInvestors())
 	impl.Router.GET("/api/goals", impl.GetGoals())
 	impl.Router.GET("/api/project", impl.GetProject())
 	impl.Router.GET("/api/projects", impl.GetProjects())
 
 	// CREATE
-	impl.Router.POST("/api/create_donate", impl.CreateDonate())
+	impl.Router.POST("/api/create_investement", impl.CreateInvestement())
 	impl.Router.POST("/api/create_project", impl.CreateProject())
 	impl.Router.POST("/api/create_user", impl.CreateUser())
 	impl.Router.POST("/api/create_goal", impl.CreateGoal())
@@ -67,8 +67,8 @@ func (impl *Implementation) registerHTTP() {
 	impl.Router.GET("/innovators", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "innovators.html", gin.H{})
 	})
-	impl.Router.GET("/performers", func(c *gin.Context) {
-		c.HTML(http.StatusOK, "performers.html", gin.H{})
+	impl.Router.GET("/contractors", func(c *gin.Context) {
+		c.HTML(http.StatusOK, "contractors.html", gin.H{})
 	})
 	impl.Router.GET("/risks", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "risks.html", gin.H{})

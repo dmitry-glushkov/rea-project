@@ -2,15 +2,16 @@ package handlers
 
 import (
 	"net/http"
+	"time"
 	"ucheba/back/internal/models"
 
 	"github.com/gin-gonic/gin"
 )
 
 type CreateGoalRequest struct {
-	PID     int `json:"pid"`
-	Target  int `json:"target"`
-	DueDate int `json:"due_date"`
+	PID     int    `json:"pid"`
+	Target  int    `json:"target"`
+	DueDate string `json:"due_date"`
 }
 
 type CreateGoalResponse struct{}
@@ -25,10 +26,16 @@ func (impl *Implementation) CreateGoal() gin.HandlerFunc {
 			return
 		}
 
+		dd, err := time.Parse("02.01.2006", r.DueDate)
+		if err != nil {
+			// TODO
+			return
+		}
+
 		goal := models.Goal{
 			PID:     r.PID,
 			Target:  r.Target,
-			DueDate: r.DueDate,
+			DueDate: dd,
 		}
 		err = goal.Save(c.Request.Context(), impl.DB)
 		if err != nil {

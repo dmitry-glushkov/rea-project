@@ -3,6 +3,7 @@ package models
 import (
 	"context"
 	"fmt"
+	"time"
 
 	"github.com/jackc/pgx/v4"
 )
@@ -12,7 +13,7 @@ type Goal struct {
 	ID      int
 	PID     int
 	Target  int
-	DueDate int
+	DueDate time.Time
 }
 
 // Save ...

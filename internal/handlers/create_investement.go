@@ -7,34 +7,34 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type CreateDonateRequest struct {
+type CreateInvestementRequest struct {
 	Uid int `json:"uid"`
 	Pid int `json:"pid"`
 	Val int `json:"val"`
 }
 
-type CreateDonateResponse struct{}
+type CreateInvestementResponse struct{}
 
-func (impl *Implementation) CreateDonate() gin.HandlerFunc {
+func (impl *Implementation) CreateInvestement() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		r := &CreateDonateRequest{}
+		r := &CreateInvestementRequest{}
 		err := c.Bind(r)
 		if err != nil {
 			c.String(http.StatusBadRequest, err.Error())
 			return
 		}
 
-		donate := models.Donate{
+		investement := models.Investement{
 			UID: r.Uid,
 			PID: r.Pid,
 			Val: r.Val,
 		}
-		err = donate.Save(c.Request.Context(), impl.DB)
+		err = investement.Save(c.Request.Context(), impl.DB)
 		if err != nil {
 			c.String(http.StatusInternalServerError, err.Error())
 			return
 		}
 
-		c.JSON(http.StatusOK, CreateDonateResponse{})
+		c.JSON(http.StatusOK, CreateInvestementResponse{})
 	}
 }

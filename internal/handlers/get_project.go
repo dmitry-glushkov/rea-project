@@ -2,6 +2,8 @@ package handlers
 
 import (
 	"net/http"
+	"time"
+	"ucheba/back/internal/models"
 
 	"github.com/gin-gonic/gin"
 )
@@ -11,7 +13,8 @@ type GetProjectRequest struct {
 }
 
 type GetProjectResponse struct {
-	Project ProjectInfo `json:"project_info"`
+	Project ProjectInfo   `json:"project_info"`
+	Goals   []models.Goal `json:"project_goals"`
 }
 
 func (impl *Implementation) GetProject() gin.HandlerFunc {
@@ -34,6 +37,23 @@ func (impl *Implementation) GetProject() gin.HandlerFunc {
 
 		c.JSON(http.StatusOK, GetProjectResponse{
 			Project: project,
+			Goals: []models.Goal{
+				{
+					ID:      0,
+					Target:  50000,
+					DueDate: time.Now().AddDate(0, 0, -7),
+				},
+				{
+					ID:      1,
+					Target:  150000,
+					DueDate: time.Now().AddDate(0, 0, 7),
+				},
+				{
+					ID:      2,
+					Target:  400000,
+					DueDate: time.Now().AddDate(0, 1, 0),
+				},
+			},
 		})
 	}
 }

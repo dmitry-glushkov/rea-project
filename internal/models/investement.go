@@ -7,19 +7,19 @@ import (
 	"github.com/jackc/pgx/v4"
 )
 
-// Donate ...
-type Donate struct {
+// Investement ...
+type Investement struct {
 	UID int
 	PID int
 	Val int
 }
 
 // Save ...
-func (d *Donate) Save(ctx context.Context, db *pgx.Conn) error {
+func (d *Investement) Save(ctx context.Context, db *pgx.Conn) error {
 	_, err := db.Exec(
 		ctx,
 		`
-			INSERT INTO donates
+			INSERT INTO investements
 				(uid, pid, val)
 				VALUES ($1, $2, $3);
 		`,
@@ -33,7 +33,7 @@ func (d *Donate) Save(ctx context.Context, db *pgx.Conn) error {
 	return nil
 }
 
-func GetProjectDonates(ctx context.Context, db *pgx.Conn, pid int) ([]Donate, error) {
+func GetProjectInvestements(ctx context.Context, db *pgx.Conn, pid int) ([]Investement, error) {
 	rows, err := db.Query(
 		ctx,
 		`
@@ -49,9 +49,9 @@ func GetProjectDonates(ctx context.Context, db *pgx.Conn, pid int) ([]Donate, er
 	}
 	defer rows.Close()
 
-	var donates []Donate
+	var donates []Investement
 	for rows.Next() {
-		var donate Donate
+		var donate Investement
 		err = rows.Scan()
 		if err != nil {
 			err = fmt.Errorf("...: %w", err)
@@ -64,7 +64,7 @@ func GetProjectDonates(ctx context.Context, db *pgx.Conn, pid int) ([]Donate, er
 	return donates, nil
 }
 
-func GetUserDonates(ctx context.Context, db *pgx.Conn, uid int) ([]Donate, error) {
+func GetUserInvestements(ctx context.Context, db *pgx.Conn, uid int) ([]Investement, error) {
 	rows, err := db.Query(
 		ctx,
 		`
@@ -80,9 +80,9 @@ func GetUserDonates(ctx context.Context, db *pgx.Conn, uid int) ([]Donate, error
 	}
 	defer rows.Close()
 
-	var donates []Donate
+	var donates []Investement
 	for rows.Next() {
-		var donate Donate
+		var donate Investement
 		err = rows.Scan()
 		if err != nil {
 			err = fmt.Errorf("...: %w", err)

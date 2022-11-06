@@ -62,37 +62,3 @@ func GetUsers(ctx context.Context, db *pgx.Conn) ([]User, error) {
 
 	return users, nil
 }
-
-// GetDonators ...
-func GetDonators(ctx context.Context, db *pgx.Conn, pid int) ([]User, error) {
-	rows, err := db.Query(
-		ctx,
-		`
-			SELECT u.id, u.login, d.val
-				FROM users AS u
-				LEFT JOIN donates AS d
-					ON u.id = d.uid
-				WHERE d.pid = $1;
-		`,
-		pid,
-	)
-	if err != nil {
-		err = fmt.Errorf("...: %w", err)
-		return nil, err
-	}
-	defer rows.Close()
-
-	var users []User
-	for rows.Next() {
-		var user User
-		err = rows.Scan()
-		if err != nil {
-			err = fmt.Errorf("...: %w", err)
-			return nil, err
-		}
-
-		users = append(users, user)
-	}
-
-	return users, nil
-}
