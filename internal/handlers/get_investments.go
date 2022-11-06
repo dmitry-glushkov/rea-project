@@ -13,6 +13,7 @@ type GetInvestmentsRequest struct {
 
 type GetInvestmentsResponse struct {
 	Investments []models.Investment `json:"investments"`
+	Project     models.Project      `json:"project_info"`
 }
 
 func (impl *Implementation) GetInvestments() gin.HandlerFunc {
@@ -31,8 +32,16 @@ func (impl *Implementation) GetInvestments() gin.HandlerFunc {
 			return
 		}
 
+		var project models.Project
+		project, err = models.GetProjectMock(c.Request.Context(), impl.DB, r.PID) // TODO mock
+		if err != nil {
+			c.String(http.StatusInternalServerError, err.Error())
+			return
+		}
+
 		resp := GetInvestmentsResponse{
 			Investments: investments,
+			Project:     project,
 		}
 
 		c.JSON(http.StatusOK, resp)
