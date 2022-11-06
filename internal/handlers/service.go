@@ -24,19 +24,27 @@ func NewImplementation(db *pgx.Conn) Implementation {
 
 func (impl *Implementation) registerHTTP() {
 	// GET
-	impl.Router.GET("/api/investors", impl.GetInvestors())
 	impl.Router.GET("/api/stages", impl.GetStages())
 	impl.Router.GET("/api/project", impl.GetProject())
 	impl.Router.GET("/api/projects", impl.GetProjects())
 	impl.Router.GET("/api/investments", impl.GetInvestments())
+	impl.Router.GET("/api/investors", impl.GetInvestors())
 	impl.Router.GET("/api/innovators", impl.GetInnovators())
 	impl.Router.GET("/api/contractors", impl.GetContractors())
+	impl.Router.GET("/api/work_progress", impl.GetWorkProgress())
+	impl.Router.GET("/api/docs", impl.GetDocs())
+	impl.Router.GET("/api/risks", impl.GetRisks())
 
 	// CREATE
 	impl.Router.POST("/api/create_investment", impl.CreateInvestment())
 	impl.Router.POST("/api/create_project", impl.CreateProject())
-	impl.Router.POST("/api/create_user", impl.CreateUser())
-	impl.Router.POST("/api/create_goal", impl.CreateGoal())
+	impl.Router.POST("/api/create_investor", impl.CreateInvestor())
+	impl.Router.POST("/api/create_innovator", impl.CreateInnovator())
+	impl.Router.POST("/api/create_contractor", impl.CreateContractor())
+	impl.Router.POST("/api/create_stage", impl.CreateStage())
+	impl.Router.POST("/api/create_work_progress", impl.CreateWorkProgress())
+	impl.Router.POST("/api/create_doc", impl.CreateDoc())
+	impl.Router.POST("/api/create_risk", impl.CreateRisk())
 
 	// WEB MORDA
 	impl.Router.LoadHTMLGlob("pages/*")
