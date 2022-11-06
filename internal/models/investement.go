@@ -49,7 +49,7 @@ func GetProjectInvestements(ctx context.Context, db *pgx.Conn, pid int) ([]Inves
 	}
 	defer rows.Close()
 
-	var donates []Investement
+	var investements []Investement
 	for rows.Next() {
 		var donate Investement
 		err = rows.Scan()
@@ -58,10 +58,10 @@ func GetProjectInvestements(ctx context.Context, db *pgx.Conn, pid int) ([]Inves
 			return nil, err
 		}
 
-		donates = append(donates, donate)
+		investements = append(investements, donate)
 	}
 
-	return donates, nil
+	return investements, nil
 }
 
 func GetUserInvestements(ctx context.Context, db *pgx.Conn, uid int) ([]Investement, error) {
@@ -80,17 +80,17 @@ func GetUserInvestements(ctx context.Context, db *pgx.Conn, uid int) ([]Investem
 	}
 	defer rows.Close()
 
-	var donates []Investement
+	var investements []Investement
 	for rows.Next() {
-		var donate Investement
+		var investement Investement
 		err = rows.Scan()
 		if err != nil {
 			err = fmt.Errorf("...: %w", err)
 			return nil, err
 		}
 
-		donates = append(donates, donate)
+		investements = append(investements, investement)
 	}
 
-	return donates, nil
+	return investements, nil
 }

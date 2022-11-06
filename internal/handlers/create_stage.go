@@ -35,7 +35,7 @@ func (impl *Implementation) CreateGoal() gin.HandlerFunc {
 		goal := models.Stage{
 			PID:     r.PID,
 			Target:  r.Target,
-			DueDate: dd,
+			DueDate: dd.Format("02.01.2006"),
 		}
 		err = goal.Save(c.Request.Context(), impl.DB)
 		if err != nil {

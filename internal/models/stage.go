@@ -8,12 +8,12 @@ import (
 	"github.com/jackc/pgx/v4"
 )
 
-// Stage ...
+// StageJS ...
 type Stage struct {
 	ID      int
 	PID     int
 	Target  int
-	DueDate time.Time
+	DueDate string
 }
 
 // Save ...
@@ -72,17 +72,17 @@ func GetStagesMock(ctx context.Context, db *pgx.Conn, pid int) ([]Stage, error) 
 		{
 			ID:      0,
 			Target:  50000,
-			DueDate: time.Now().AddDate(0, 0, -7),
+			DueDate: time.Now().AddDate(0, 0, -7).Format("02.01.2006"),
 		},
 		{
 			ID:      1,
 			Target:  150000,
-			DueDate: time.Now().AddDate(0, 0, 7),
+			DueDate: time.Now().AddDate(0, 0, 7).Format("02.01.2006"),
 		},
 		{
 			ID:      2,
 			Target:  400000,
-			DueDate: time.Now().AddDate(0, 1, 0),
+			DueDate: time.Now().AddDate(0, 1, 0).Format("02.01.2006"),
 		},
 	}, nil
 }

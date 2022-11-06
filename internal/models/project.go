@@ -37,7 +37,7 @@ func (p *Project) Save(ctx context.Context, db *pgx.Conn) error {
 }
 
 // GetProject ...
-func GetProjects(ctx context.Context, db *pgx.Conn, page, limit int) ([]Project, error) {
+func GetProjects(ctx context.Context, db *pgx.Conn, page, limit int) ([]Project, int, error) {
 	rows, err := db.Query(
 		ctx,
 		`
@@ -47,7 +47,7 @@ func GetProjects(ctx context.Context, db *pgx.Conn, page, limit int) ([]Project,
 	)
 	if err != nil {
 		err = fmt.Errorf("...: %w", err)
-		return nil, err
+		return nil, 0, err
 	}
 	defer rows.Close()
 
@@ -57,13 +57,13 @@ func GetProjects(ctx context.Context, db *pgx.Conn, page, limit int) ([]Project,
 		err = rows.Scan()
 		if err != nil {
 			err = fmt.Errorf("...: %w", err)
-			return nil, err
+			return nil, 0, err
 		}
 
 		projects = append(projects, project)
 	}
 
-	return projects, nil
+	return projects, 0, nil // TODO count
 }
 
 func GetProject(ctx context.Context, db *pgx.Conn, pid int) (Project, error) {
@@ -106,4 +106,46 @@ func GetProjectMock(ctx context.Context, db *pgx.Conn, pid int) (Project, error)
 		Sum:    100000,
 		Target: 400000,
 	}, nil
+}
+
+func GetProjectsMock(ctx context.Context, db *pgx.Conn, page int, limit int) ([]Project, int, error) {
+	return []Project{
+		{
+			ID:     1,
+			Owner:  "владелец 1",
+			Name:   "проект 1",
+			Desc:   "описание проекта 1",
+			Sum:    178,
+			Target: 300,
+		},
+		{
+			ID:     2,
+			Owner:  "владелец 2",
+			Name:   "проект 2",
+			Desc:   "описание описание описание описание описание описание описание описание описание описание описание описание описание описание описание",
+			Sum:    1780,
+			Target: 3000,
+		},
+		{
+			ID:     3,
+			Owner:  "владелец 3",
+			Name:   "проект 3",
+			Sum:    17800,
+			Target: 30000,
+		},
+		{
+			ID:     4,
+			Owner:  "владелец 4",
+			Name:   "проект 4",
+			Sum:    178000,
+			Target: 300000,
+		},
+		{
+			ID:     5,
+			Owner:  "владелец 5",
+			Name:   "проект 5",
+			Sum:    1780000,
+			Target: 3000000,
+		},
+	}, 5, nil
 }
