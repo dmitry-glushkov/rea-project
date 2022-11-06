@@ -4,8 +4,19 @@
     </head>
 
     <body>
-        <div>
-            <!-- todo -->
+
+        <div style="padding: 2em 0;">
+            <h2 style="text-align: center;"> 
+                <div id="projectHeader"></div>
+            </h2>
+            <hr>
+            <div id="projectDesc"></div>
+            <hr>
+            <hr>
+            <ul id="projectStages"></ul>
+            <hr>
+
+
         </div>
 
         <script type="application/javascript">
@@ -13,8 +24,61 @@
             const pid = urlParams.get("pid")
             $.get("/api/project?pid="+pid, function(data) {
                 console.log(data);
-            });
+            if (data.hasOwnProperty('project_info')) {
+                let project = data['project_info'];
+                head = '<span>'+
+                    projeсt.project_name
+                    +'</span>';
+                $('#projectHeader').append(head);
+                desc = '<span>'+
+                    project.desc
+                    +'</span>';
+                $('#projectDesc').append(desc);
+                
+                }
+            if (data.hasOwnProperty('project_stages')) {
+                let stages = data['project_stages'];
+                for (i = 0; i < stages.length; i++) {
+                    stage = stages[i];
+                    li = '<li id="stageID'+stage.ID+'">' 
+                        +'<ul>'
+                        +'<li>'+stage.Target+'</li>'
+                        +'<li>'+stage.DueDate+'</li>'
+                        +'</ul>'+'</li>';
+                    $('#projectStages').append(li);
+
+                }
+            }
+        });      
         </script>
+
+        <style>
+            table {
+                border: 1px solid black; /* Рамка вокруг таблицы */
+                border-collapse: collapse; /* Отображать только одинарные линии */
+                width: 100%;
+                table-layout: fixed;
+            }
+            th {
+                text-align: center; /* Выравнивание по левому краю */
+                padding: 0 1em;
+                border: 1px solid black; /* Граница вокруг ячеек */
+                background-color: white;
+            }
+            td {
+                text-align: center;
+                border: 1px solid black;
+                background-color: white;
+                padding: 0 1em;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+            a {
+                text-decoration: none;
+            }
+        </style>
+
     </body>
 </html>
 
