@@ -25,7 +25,7 @@ func NewImplementation(db *pgx.Conn) Implementation {
 func (impl *Implementation) registerHTTP() {
 	// GET
 	impl.Router.GET("/api/investors", impl.GetInvestors())
-	impl.Router.GET("/api/goals", impl.GetGoals())
+	impl.Router.GET("/api/stages", impl.GetStages())
 	impl.Router.GET("/api/project", impl.GetProject())
 	impl.Router.GET("/api/projects", impl.GetProjects())
 
@@ -52,8 +52,8 @@ func (impl *Implementation) registerHTTP() {
 	impl.Router.GET("/investements", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "investements.html", gin.H{})
 	})
-	impl.Router.GET("/goals", func(c *gin.Context) {
-		c.HTML(http.StatusOK, "goals.html", gin.H{})
+	impl.Router.GET("/stages", func(c *gin.Context) {
+		c.HTML(http.StatusOK, "stages.html", gin.H{})
 	})
 	impl.Router.GET("/crm", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "crm.html", gin.H{})

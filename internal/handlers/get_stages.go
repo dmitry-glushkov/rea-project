@@ -8,32 +8,35 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type GetGoalsRequest struct {
+type GetStagesRequest struct {
 	PID int `json:"pid" form:"pid"`
 }
 
-type GetGoalsResponse struct {
-	PID int `json:"pid" form:"pid"`
-	// TODO
+type GetStagesResponse struct {
+	PID    int `json:"pid" form:"pid"`
+	Stages []models.Stage
 }
 
-func (impl *Implementation) GetGoals() gin.HandlerFunc {
+func (impl *Implementation) GetStages() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		r := &GetGoalsRequest{}
+		r := &GetStagesRequest{}
 		err := c.Bind(r)
 		if err != nil {
 			c.String(http.StatusBadRequest, err.Error())
 			return
 		}
 
-		// var goals []models.Goal
-		_, err = models.GetGoals(c.Request.Context(), impl.DB, r.PID)
+		var stages []models.Stage
+		stages, err = models.GetStages(c.Request.Context(), impl.DB, r.PID)
 		if err != nil {
 			c.String(http.StatusInternalServerError, err.Error())
 			return
 		}
 
-		resp := GetGoalsResponse{}
+		resp := GetStagesResponse{
+			PID:    r.PID,
+			Stages: stages,
+		}
 
 		c.JSON(http.StatusOK, resp)
 	}
