@@ -13,8 +13,8 @@ type GetStagesRequest struct {
 }
 
 type GetStagesResponse struct {
-	PID    int `json:"pid" form:"pid"`
-	Stages []models.Stage
+	PID    int            `json:"pid"`
+	Stages []models.Stage `json:"stages"`
 }
 
 func (impl *Implementation) GetStages() gin.HandlerFunc {

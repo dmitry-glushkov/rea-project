@@ -33,15 +33,15 @@
                 if (data.hasOwnProperty('project_info')) {
                     let project = data['project_info']
                     head = '<span>'+
-                        project.Name
+                        project.name
                         +'</span>';
                     $('#projectHeader').append(head);
                     desc = '<span>'+
-                        project.Desc
+                        project.desc
                         +'</span>';
                     $('#projectDesc').append(desc);
                     target = '<span>'+
-                        project.Sum + '/' + project.Target
+                        project.sum + '/' + project.target
                         +'</span>';
                     $('#projectTarget').append(target);
                 }
@@ -50,11 +50,11 @@
                     let stages = data['project_stages']
                     for (i = 0; i < stages.length; i++) {
                         stage = stages[i];
-                        li = '<li id="stageID_'+stage.ID+'">' 
-                            +'<span>'+'Этап '+(stage.ID+1)+'</span>'
+                        li = '<li id="stageID_'+stage.id+'">' 
+                            +'<span>'+'Этап '+(stage.id+1)+'</span>'
                             +'<ul>'
-                            +'<li>'+stage.Target+'</li>'
-                            +'<li>'+stage.DueDate+'</li>'
+                            +'<li>'+stage.target+'</li>'
+                            +'<li>'+stage.due_date+'</li>'
                             +'</ul>'+'</li>';
                         $('#projectStages').append(li);
 
@@ -63,7 +63,7 @@
                 if (data.hasOwnProperty('project_info')) {
                     let project = data['project_info']
                     owner = '<span>'+
-                            project.Owner
+                            project.owner
                             +'</span>';
                         $('#projectOwner').append(owner);
                 }

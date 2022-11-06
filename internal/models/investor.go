@@ -8,6 +8,9 @@ import (
 )
 
 type Investor struct {
+	ID    int    `json:"id"`
+	Login string `json:"login"`
+	// TODO
 }
 
 // GetInvestors ...
@@ -17,7 +20,7 @@ func GetInvestors(ctx context.Context, db *pgx.Conn, pid int) ([]Investor, error
 		`
 			SELECT u.id, u.login, d.val
 				FROM users AS u
-				LEFT JOIN investements AS d
+				LEFT JOIN investments AS d
 					ON u.id = d.uid
 				WHERE d.pid = $1;
 		`,

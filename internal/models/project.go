@@ -9,12 +9,12 @@ import (
 
 // Project ...
 type Project struct {
-	ID     int
-	Name   string
-	Desc   string
-	Owner  string
-	Sum    int
-	Target int
+	ID     int    `json:"id"`
+	Name   string `json:"name"`
+	Desc   string `json:"desc"`
+	Owner  string `json:"owner"`
+	Sum    int    `json:"sum"`
+	Target int    `json:"target"`
 }
 
 // Save ...
@@ -36,7 +36,7 @@ func (p *Project) Save(ctx context.Context, db *pgx.Conn) error {
 	return nil
 }
 
-// GetProject ...
+// GetProjects ...
 func GetProjects(ctx context.Context, db *pgx.Conn, page, limit int) ([]Project, int, error) {
 	rows, err := db.Query(
 		ctx,

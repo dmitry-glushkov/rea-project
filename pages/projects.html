@@ -42,11 +42,11 @@
                 let projects = data['projects']
                 for (i = 0; i < projects.length; i++) {
                     project = projects[i];
-                    tr = '<tr id="projectId_'+project.ID+'">' +
-                        '<td>'+project.Owner+'</td>' +
-                        '<td>' + '<a href="/project?pid='+project.ID+'"">'+project.Name+'</a>'+'</td>'+
-                        '<td>'+project.Desc+'</td>' +
-                        '<td>'+project.Sum+'/'+project.Target+'</td>' +
+                    tr = '<tr id="projectId_'+project.id+'">' +
+                        '<td>'+project.owner+'</td>' +
+                        '<td>' + '<a href="/project?pid='+project.id+'"">'+project.name+'</a>'+'</td>'+
+                        '<td>'+project.desc+'</td>' +
+                        '<td>'+project.sum+'/'+project.target+'</td>' +
                         '</tr>';
                     $('#projectsTableBody').append(tr);
                 }
