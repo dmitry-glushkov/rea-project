@@ -32,7 +32,7 @@ func (impl *Implementation) CreateGoal() gin.HandlerFunc {
 			return
 		}
 
-		goal := models.Goal{
+		goal := models.Stage{
 			PID:     r.PID,
 			Target:  r.Target,
 			DueDate: dd,

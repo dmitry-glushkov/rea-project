@@ -2,7 +2,6 @@ package handlers
 
 import (
 	"net/http"
-	"time"
 	"ucheba/back/internal/models"
 
 	"github.com/gin-gonic/gin"
@@ -13,8 +12,8 @@ type GetProjectRequest struct {
 }
 
 type GetProjectResponse struct {
-	Project ProjectInfo   `json:"project_info"`
-	Goals   []models.Goal `json:"project_goals"`
+	Project models.Project `json:"project_info"`
+	Stages  []models.Stage `json:"project_stages"`
 }
 
 func (impl *Implementation) GetProject() gin.HandlerFunc {
@@ -26,55 +25,23 @@ func (impl *Implementation) GetProject() gin.HandlerFunc {
 			return
 		}
 
-		// var project models.Project
-		// project, err = models.GetProject(c.Request.Context(), impl.DB, r.PID)
-		// if err != nil {
-		// 	c.String(http.StatusInternalServerError, err.Error())
-		// 	return
-		// }
+		var project models.Project
+		project, err = models.GetProjectMock(c.Request.Context(), impl.DB, r.PID)
+		if err != nil {
+			c.String(http.StatusInternalServerError, err.Error())
+			return
+		}
 
-		project := createMockProject(r.PID)
+		var stages []models.Stage
+		stages, err = models.GetStagesMock(c.Request.Context(), impl.DB, r.PID)
+		if err != nil {
+			c.String(http.StatusInternalServerError, err.Error())
+			return
+		}
 
 		c.JSON(http.StatusOK, GetProjectResponse{
 			Project: project,
-			Goals: []models.Goal{
-				{
-					ID:      0,
-					Target:  50000,
-					DueDate: time.Now().AddDate(0, 0, -7),
-				},
-				{
-					ID:      1,
-					Target:  150000,
-					DueDate: time.Now().AddDate(0, 0, 7),
-				},
-				{
-					ID:      2,
-					Target:  400000,
-					DueDate: time.Now().AddDate(0, 1, 0),
-				},
-			},
+			Stages:  stages,
 		})
-	}
-}
-
-func createMockProject(pid int) ProjectInfo {
-	return ProjectInfo{
-		PID:   pid,
-		Owner: "создатель проекта",
-		Desc: `
-		большое описание проекта большое описание проекта большое описание проекта большое описание проекта большое описание проекта
-		большое описание проекта большое описание проекта большое описание проекта большое описание проекта большое описание проекта
-		большое описание проекта большое описание проекта большое описание проекта большое описание проекта большое описание проекта
-		большое описание проекта большое описание проекта большое описание проекта большое описание проекта большое описание проекта
-		большое описание проекта большое описание проекта большое описание проекта большое описание проекта большое описание проекта
-		большое описание проекта большое описание проекта большое описание проекта большое описание проекта большое описание проекта
-		большое описание проекта большое описание проекта большое описание проекта большое описание проекта большое описание проекта
-		большое описание проекта большое описание проекта большое описание проекта большое описание проекта большое описание проекта
-		большое описание проекта большое описание проекта большое описание проекта большое описание проекта большое описание проекта
-		`,
-		ProjectName: "название проекта",
-		Sum:         100000,
-		Target:      400000,
 	}
 }

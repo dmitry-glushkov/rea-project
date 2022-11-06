@@ -38,7 +38,7 @@ func GetProjectInvestements(ctx context.Context, db *pgx.Conn, pid int) ([]Inves
 		ctx,
 		`
 		SELECT uid, pid, val
-			FROM goals
+			FROM stages
 			WHERE pid = $1;	
 		`,
 		pid,
@@ -69,7 +69,7 @@ func GetUserInvestements(ctx context.Context, db *pgx.Conn, uid int) ([]Investem
 		ctx,
 		`
 		SELECT uid, pid, val
-			FROM goals
+			FROM stages
 			WHERE uid = $1;	
 		`,
 		uid,
