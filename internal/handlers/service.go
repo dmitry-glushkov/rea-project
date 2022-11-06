@@ -28,6 +28,9 @@ func (impl *Implementation) registerHTTP() {
 	impl.Router.GET("/api/stages", impl.GetStages())
 	impl.Router.GET("/api/project", impl.GetProject())
 	impl.Router.GET("/api/projects", impl.GetProjects())
+	impl.Router.GET("/api/investments", impl.GetInvestments())
+	impl.Router.GET("/api/innovators", impl.GetInnovators())
+	impl.Router.GET("/api/contractors", impl.GetContractors())
 
 	// CREATE
 	impl.Router.POST("/api/create_investment", impl.CreateInvestment())

@@ -94,3 +94,28 @@ func GetUserInvestments(ctx context.Context, db *pgx.Conn, uid int) ([]Investmen
 
 	return investments, nil
 }
+
+func GetInvestmentsMock(ctx context.Context, db *pgx.Conn, pid int) ([]Investment, error) {
+	return []Investment{
+		{
+			UID: 0,
+			Val: 100,
+		},
+		{
+			UID: 1,
+			Val: 250,
+		},
+		{
+			UID: 2,
+			Val: 100,
+		},
+		{
+			UID: 3,
+			Val: 1000,
+		},
+		{
+			UID: 4,
+			Val: 50,
+		},
+	}, nil
+}
