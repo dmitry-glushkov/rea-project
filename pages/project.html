@@ -12,9 +12,13 @@
             <hr>
             <div id="projectDesc"></div>
             <hr>
-            <hr>
+            <div id="projectTarget">
+                Собрано/Цель
+                <br>
+            </div>
             <ul id="projectStages"></ul>
             <hr>
+            <div id="projectOwner"></div>
 
 
         </div>
@@ -24,31 +28,44 @@
             const pid = urlParams.get("pid")
             $.get("/api/project?pid="+pid, function(data) {
                 console.log(data);
-            if (data.hasOwnProperty('project_info')) {
-                let project = data['project_info'];
-                head = '<span>'+
-                    projeсt.project_name
-                    +'</span>';
-                $('#projectHeader').append(head);
-                desc = '<span>'+
-                    project.desc
-                    +'</span>';
-                $('#projectDesc').append(desc);
-                
+                if (data.hasOwnProperty('project_info')) {
+                    let project = data['project_info']
+                    head = '<span>'+
+                        project.Name
+                        +'</span>';
+                    $('#projectHeader').append(head);
+                    desc = '<span>'+
+                        project.Desc
+                        +'</span>';
+                    $('#projectDesc').append(desc);
+                    target = '<span>'+
+                        project.Sum + '/' + project.Target
+                        +'</span>';
+                    $('#projectTarget').append(target);
                 }
-            if (data.hasOwnProperty('project_stages')) {
-                let stages = data['project_stages'];
-                for (i = 0; i < stages.length; i++) {
-                    stage = stages[i];
-                    li = '<li id="stageID'+stage.ID+'">' 
-                        +'<ul>'
-                        +'<li>'+stage.Target+'</li>'
-                        +'<li>'+stage.DueDate+'</li>'
-                        +'</ul>'+'</li>';
-                    $('#projectStages').append(li);
+                    
+                if (data.hasOwnProperty('project_stages')) {
+                    let stages = data['project_stages']
+                    for (i = 0; i < stages.length; i++) {
+                        stage = stages[i];
+                        li = '<li id="stageID_'+stage.ID+'">' 
+                            +'<span>'+'Этап '+(stage.ID+1)+'</span>'
+                            +'<ul>'
+                            +'<li>'+stage.Target+'</li>'
+                            +'<li>'+stage.DueDate+'</li>'
+                            +'</ul>'+'</li>';
+                        $('#projectStages').append(li);
 
+                    }
                 }
-            }
+                if (data.hasOwnProperty('project_info')) {
+                    let project = data['project_info']
+                    owner = '<span>'+
+                            project.Owner
+                            +'</span>';
+                        $('#projectOwner').append(owner);
+                }
+                
         });      
         </script>
 
