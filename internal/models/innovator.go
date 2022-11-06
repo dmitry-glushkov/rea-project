@@ -7,6 +7,8 @@ import (
 )
 
 type Innovator struct {
+	ID   int    `json:"id"`
+	Name string `json:"login"`
 }
 
 func GetInnovators(ctx context.Context, db *pgx.Conn) ([]Innovator, error) {

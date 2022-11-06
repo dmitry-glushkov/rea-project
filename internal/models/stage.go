@@ -8,12 +8,12 @@ import (
 	"github.com/jackc/pgx/v4"
 )
 
-// StageJS ...
+// Stage ...
 type Stage struct {
-	ID      int
-	PID     int
-	Target  int
-	DueDate string
+	ID      int    `json:"id"`
+	PID     int    `json:"pid"`
+	Target  int    `json:"target"`
+	DueDate string `json:"due_date"`
 }
 
 // Save ...

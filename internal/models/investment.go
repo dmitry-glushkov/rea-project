@@ -7,19 +7,19 @@ import (
 	"github.com/jackc/pgx/v4"
 )
 
-// Investement ...
-type Investement struct {
-	UID int
-	PID int
-	Val int
+// Investment ...
+type Investment struct {
+	UID int `json:"uid"`
+	PID int `json:"pid"`
+	Val int `json:"val"`
 }
 
 // Save ...
-func (d *Investement) Save(ctx context.Context, db *pgx.Conn) error {
+func (d *Investment) Save(ctx context.Context, db *pgx.Conn) error {
 	_, err := db.Exec(
 		ctx,
 		`
-			INSERT INTO investements
+			INSERT INTO investments
 				(uid, pid, val)
 				VALUES ($1, $2, $3);
 		`,
@@ -33,7 +33,7 @@ func (d *Investement) Save(ctx context.Context, db *pgx.Conn) error {
 	return nil
 }
 
-func GetProjectInvestements(ctx context.Context, db *pgx.Conn, pid int) ([]Investement, error) {
+func GetProjectInvestments(ctx context.Context, db *pgx.Conn, pid int) ([]Investment, error) {
 	rows, err := db.Query(
 		ctx,
 		`
@@ -49,22 +49,22 @@ func GetProjectInvestements(ctx context.Context, db *pgx.Conn, pid int) ([]Inves
 	}
 	defer rows.Close()
 
-	var investements []Investement
+	var investments []Investment
 	for rows.Next() {
-		var donate Investement
+		var investment Investment
 		err = rows.Scan()
 		if err != nil {
 			err = fmt.Errorf("...: %w", err)
 			return nil, err
 		}
 
-		investements = append(investements, donate)
+		investments = append(investments, investment)
 	}
 
-	return investements, nil
+	return investments, nil
 }
 
-func GetUserInvestements(ctx context.Context, db *pgx.Conn, uid int) ([]Investement, error) {
+func GetUserInvestments(ctx context.Context, db *pgx.Conn, uid int) ([]Investment, error) {
 	rows, err := db.Query(
 		ctx,
 		`
@@ -80,17 +80,17 @@ func GetUserInvestements(ctx context.Context, db *pgx.Conn, uid int) ([]Investem
 	}
 	defer rows.Close()
 
-	var investements []Investement
+	var investments []Investment
 	for rows.Next() {
-		var investement Investement
+		var investment Investment
 		err = rows.Scan()
 		if err != nil {
 			err = fmt.Errorf("...: %w", err)
 			return nil, err
 		}
 
-		investements = append(investements, investement)
+		investments = append(investments, investment)
 	}
 
-	return investements, nil
+	return investments, nil
 }

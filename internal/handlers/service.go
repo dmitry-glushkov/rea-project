@@ -30,7 +30,7 @@ func (impl *Implementation) registerHTTP() {
 	impl.Router.GET("/api/projects", impl.GetProjects())
 
 	// CREATE
-	impl.Router.POST("/api/create_investement", impl.CreateInvestement())
+	impl.Router.POST("/api/create_investment", impl.CreateInvestment())
 	impl.Router.POST("/api/create_project", impl.CreateProject())
 	impl.Router.POST("/api/create_user", impl.CreateUser())
 	impl.Router.POST("/api/create_goal", impl.CreateGoal())
@@ -49,8 +49,8 @@ func (impl *Implementation) registerHTTP() {
 	impl.Router.GET("/lk", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "lk.html", gin.H{})
 	})
-	impl.Router.GET("/investements", func(c *gin.Context) {
-		c.HTML(http.StatusOK, "investements.html", gin.H{})
+	impl.Router.GET("/investments", func(c *gin.Context) {
+		c.HTML(http.StatusOK, "investments.html", gin.H{})
 	})
 	impl.Router.GET("/stages", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "stages.html", gin.H{})
