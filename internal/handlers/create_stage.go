@@ -8,18 +8,18 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type CreateGoalRequest struct {
+type CreateStageRequest struct {
 	PID     int    `json:"pid"`
 	Target  int    `json:"target"`
 	DueDate string `json:"due_date"`
 }
 
-type CreateGoalResponse struct{}
+type CreateStageResponse struct{}
 
-// CreateGoal ...
-func (impl *Implementation) CreateGoal() gin.HandlerFunc {
+// CreateStage ...
+func (impl *Implementation) CreateStage() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		r := &CreateGoalRequest{}
+		r := &CreateStageRequest{}
 		err := c.Bind(r)
 		if err != nil {
 			c.String(http.StatusBadRequest, err.Error())
@@ -43,6 +43,6 @@ func (impl *Implementation) CreateGoal() gin.HandlerFunc {
 			return
 		}
 
-		c.JSON(http.StatusOK, CreateGoalResponse{})
+		c.JSON(http.StatusOK, CreateStageResponse{})
 	}
 }

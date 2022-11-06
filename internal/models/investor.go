@@ -46,3 +46,7 @@ func GetInvestors(ctx context.Context, db *pgx.Conn, pid int) ([]Investor, error
 
 	return users, nil
 }
+
+func (inv Investor) Save(ctx context.Context, db *pgx.Conn) error {
+	return nil
+}
