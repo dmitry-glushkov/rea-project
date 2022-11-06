@@ -2,14 +2,71 @@
     <head>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     </head>
-    <h1> ivestments </h1>
-    <br>
-    <p>
-        Дёмин пидор
-    </p>
+   
+    <body>
+        <div style="padding: 2em 0;">
+            <h2 style="text-align: center;"> 
+                <div id="projectHeader">Инвестиции в проект</div>
+            </h2>
+        </div>
+        <br>
+
+        <div>
+            <form method="post" style="text-align: center;">    
+                <label for="ProjectInvestorInput">Имя инвестора</label>
+                <input id="ProjectInvestorInput" type="text"/>
+    
+                <label for="ProjectSumInput">описание проекта</label>
+                <input id="ProjectSumInput" type="text"/>
+    
+                <input type="button" value="Submit" id="SubmitBtn">
+            </form>
+        </div>
+
+        <div style="padding: 2em 0;">
+            <table id="investmentsTable">
+                <thead>
+                    <tr>
+                        <th>Инвестор</th><th>Сумма</th>
+                    </tr>
+                </thead>
+                <tbody id="investmentsTableBody"></tbody>
+            </table>
+        </div>
+    </body>
+
+
     <script>
          $.get("/api/investments", function(data) {
                 console.log(data);
+
+                if (data.hasOwnProperty('project_info')) {
+                    let project = data['project_info']
+                    head = '<span>'+
+                        project.name
+                        +'</span>';
+                    $('#projectHeader').append(head);
+                    desc = '<span>'+
+                        project.desc
+                        +'</span>';
+                    $('#projectDesc').append(desc);
+                    target = '<span>'+
+                        project.sum + '/' + project.target
+                        +'</span>';
+                    $('#projectTarget').append(target);
+                }
+
+                if (data.hasOwnProperty('investments')) {
+                let investments = data['investments']
+                for (i = 0; i < investments.length; i++) {
+                    investment = investments[i];
+                    tr = '<tr id="investmentId_'+investment.id+'">' +
+                        '<td>'+investment.uid+'</td>' +
+                        '<td>'+investment.sum+'</td>' +
+                        '</tr>';
+                    $('#investmentsTableBody').append(tr);
+                }
+            }
          });
     </script>
 </html>
