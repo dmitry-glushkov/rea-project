@@ -20,9 +20,11 @@
             <hr>
             <div id="projectOwner"></div>
             <br>
-            <button onclick="location.href='/investments'" type="button">
-                Перейти к инвестициям
-            </button>
+            <div id="buttonInvestment">
+                <!-- <button onclick="location.href='/investments?pid='+project.id+''" type="button">
+                    Перейти к инвестициям
+                </button> -->
+            </div>
         </div>
 
         <script type="application/javascript">
@@ -44,6 +46,8 @@
                         project.sum + '/' + project.target
                         +'</span>';
                     $('#projectTarget').append(target);
+                    btn = `<button onclick="location.href='/investments?pid=`+project.id+`'" type="button"> Перейти к инвестициям </button>`;
+                    $('#buttonInvestment').append(btn);       
                 }
                     
                 if (data.hasOwnProperty('project_stages')) {
@@ -67,6 +71,7 @@
                             +'</span>';
                         $('#projectOwner').append(owner);
                 }
+
                 
         });      
         </script>
