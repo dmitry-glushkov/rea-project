@@ -1,6 +1,74 @@
 <html>
-    <h1> innnovators </h1>
+    <head>
+        <h1> Инноваторы </h1>
+    </head>
+
+    <body>
+        <div style="padding: 2em 0;">
+            <h2 style="text-align: center;"> Список инноваторов </h2>
+            <table id="innovatorsTable">
+                <thead>
+                    <tr>
+                        <th>Имя инноватора</th><th>Сферы интереса</th><th>Проекты</th>
+                    </tr>
+                </thead>
+                <tbody id="innovatorsTableBody"></tbody>
+            </table>
+        </div>
+
+        <script type="application/javascript">
+            $.get("/api/innovators", function(data) { //у каждого объекта "инноватор" должны быть как минимум сфера интересов, имя и массив проектов с id и названием
+                if (data.hasOwnProperty('innovators')) {
+                    let innovators = data['innovators']
+                    for (i = 0; i < innovator.length; i++) {
+                        innovator = innovators[i];
+                        innProjects = innovator.projects
+                        for (j = 0; j < innProjects.length; j++){
+                            project = innProjects[i];
+                            li = li + '<li id="projectID_'+project.id+'">' //не уверен, что так правильно конкатенировать, 
+                                + '<a href="/project?pid='+project.id+'"">'+project.name+'</a>'+'</li>'; //но конкатенировать надо
+                        }
+                        tr = '<tr id="innovatorId_'+innovator.id+'">' +
+                            '<td>'+innovator.name+'</td>' +
+                            '<td>'+innovator.interests+'</td>' +
+                            '<td>'+'<ul>'+li+'</ul>'+'</td>' +           //и потом сконкатенированные эл-ты списка пихаем в теги <ul> внутри <td>
+                            '</tr>';                                     //мысль короче такая
+                        $('#innovatorsTableBody').append(tr);
+                    }
+                }
+            })
+            
+        </script>
+
+        <style>
+            table {
+                border: 1px solid black; /* Рамка вокруг таблицы */
+                border-collapse: collapse; /* Отображать только одинарные линии */
+                width: 100%;
+                table-layout: fixed;
+            }
+            th {
+                text-align: center; /* Выравнивание по левому краю */
+                padding: 0 1em;
+                border: 1px solid black; /* Граница вокруг ячеек */
+                background-color: white;
+            }
+            td {
+                text-align: center;
+                border: 1px solid black;
+                background-color: white;
+                padding: 0 1em;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+            a {
+                text-decoration: none;
+            }
+        </style>
+    </body>
 </html>
+
 <!-- 
     Имя | сферы интереса | Список созданных проектов (с ссылками на них) (сделать как UL)
  -->
