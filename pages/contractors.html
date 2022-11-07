@@ -1,6 +1,73 @@
 <html>
-    <h1> contractors </h1> 
-    <!-- Исполнители -->
+    <head>
+        <div class="btn-group">
+            <button onclick="location.href='/projects'">проекты</button>
+            <button onclick="location.href='/investors'">инвесторы</button>
+            <button onclick="location.href='/innovators'">инноваторы</button>
+            <button onclick="location.href='/contractors'">исполнители</button>
+        </div>
+    </head>
+
+    <body>
+        <div>
+            <h1 style="text-align: center;"> исполнители </h1> 
+        </div>
+
+        <div id="createContractor">
+                <h3 style="text-align: center;">
+                        зарегестрировать нового исполнителя
+                </h3>
+                <form method="post">
+                    <label for=""></label>
+                    <input id="" type="text">
+
+                    <label for=""></label>
+                    <input id="" type="text">
+
+                    <!-- todo -->
+                </form>
+        </div>
+
+        <div id="contractorsList">
+            <table id="contractorsTable">
+                <thead>
+                    <tr>
+                        <th>исполнитель</th>
+                        <th>род деятельности</th>
+                        <th>список проектов</th>
+                    </tr>
+                </thead>
+                <tbody id="contractorsTableBody">
+                    <!-- сюда вставлять -->
+                </tbody>
+            </table>
+        </div>
+    </body>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const pid = urlParams.get("pid");
+
+        if (pid == null) { // список всех исполнителей
+            $.get("/api/contractors", function(data) {
+                if (data.hasOwnProperty('contractors')) {
+                    // TODO
+                }
+            });
+        } else { // список исполнителей, связанных с проектом pid
+            $.get("/api/contractors?pid="+pid, function(data) {
+                if (data.hasOwnProperty('contractors')) {
+                    // TODO
+                }
+            });
+        }
+    </script>
+    
+    <style>
+        .btn-group button {
+            float: center;
+        }
+    </style>
 </html>
 <!-- 
     Имя | сферы интереса | Род деятельности (сделать как UL) | Список проектов в которых участвовали (как UL с ссылками)
