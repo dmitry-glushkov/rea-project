@@ -9,13 +9,15 @@
     </head>
 
     <body>
-        
+        <!-- todo добавить таблицу контрактов с исполнителями (имя исполнителя, задание, документ, дата) -->
     </body>
 
-    <script>
-        
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js">
+        $.get("/api/contracts?pid="+pid, function(data) {
+            // TODO заполнить список контрактов с исполнителями (имя исполнителя, задание, документ, дата)
+        })
     </script>
-
+        
     <style>
         .btn-group button {
             float: center;
