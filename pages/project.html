@@ -27,6 +27,7 @@
             <hr>
             <div id="projectOwner"></div>
             <br>
+<<<<<<< HEAD
             <div id="buttonInvestment">
                 <!-- кнопка перехода к инвестициям -->
             </div> 
@@ -34,6 +35,26 @@
                 добавить кнопки перехода к исполнителям, инвесторам (в последнюю очередь) и документам, рискам и экспертизе
              -->
 
+=======
+            <div id="buttons" class="btns-nav">
+                <!-- заполняется jquery -->
+                <!-- туту будет переход к исполнителям /contracts -->
+                <!-- тут будет переход к рискам /risks?pid=x -->
+                <!-- тут будет переход к документам /docs?pid=x -->
+            </div>
+            <div>
+                <!-- заполняется jquery -->
+                
+            </div>
+            <div>
+                <!-- заполняется jquery -->
+                
+            </div>
+            <div>
+                <!-- заполняется jquery -->
+               
+            </div>
+>>>>>>> d3eee0554bb9f966fcbc4617e94f2c3a3cb1083b
         </div>
 
         <script type="application/javascript">
@@ -55,8 +76,12 @@
                         project.sum + '/' + project.target
                         +'</span>';
                     $('#projectTarget').append(target);
-                    btn = `<button onclick="location.href='/investments?pid=`+project.id+`'" type="button"> Перейти к инвестициям </button>`;
-                    $('#buttonInvestment').append(btn);       
+                    btnInv = `<button onclick="location.href='/investments?pid=`+project.id+`'" type="button"> Перейти к инвестициям </button>`;
+                    $('#buttons').append(btnInv); 
+                    btnCntr = `<button onclick="location.href='/contracts?pid=`+project.id+`'" type="button"> Перейти к документам проекта </button>`;
+                    $('#buttons').append(btnCntr);
+                    btnRisks = `<button onclick="location.href='/risks?pid=`+project.id+`'" type="button"> Перейти к рискам проекта </button>`;
+                    $('#buttons').append(btnRisks);
                 }
                     
                 if (data.hasOwnProperty('project_stages')) {
@@ -111,6 +136,9 @@
                 text-decoration: none;
             }
             .btn-group button {
+                float: center;
+            }
+            .btns-nav button {
                 float: center;
             }
         </style>
