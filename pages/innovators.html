@@ -24,6 +24,7 @@
         <script type="application/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js">
             $.get("/api/innovators", function(data) { //у каждого объекта "инноватор" должны быть как минимум сфера интересов, имя и массив проектов с id и названием
                 if (data.hasOwnProperty('innovators')) {
+                    console.log(data);
                     let innovators = data['innovators']
                     for (i = 0; i < innovator.length; i++) {
                         innovator = innovators[i];
