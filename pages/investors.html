@@ -1,22 +1,142 @@
 <html>
     <head>
         <div class="btn-group">
-            <button onclick="location.href='/projects'">проекты</button>
-            <button onclick="location.href='/investors'">инвесторы</button>
-            <button onclick="location.href='/innovators'">инноваторы</button>
-            <button onclick="location.href='/contractors'">исполнители</button>
+            <button onclick="location.href='/projects'">Проекты</button>
+            <button onclick="location.href='/investors'">Инвесторы</button>
+            <button onclick="location.href='/innovators'">Инноваторы</button>
+            <button onclick="location.href='/contractors'">Исполнители</button>
         </div>
     </head>
     
     <body>
-        <!-- todo по аналогии с другими типами пользователей -->
+        <div>
+            <h1 style="text-align: center;"> Инвесторы </h1> 
+        </div>
+
+        <div id="createInvestor">
+                <h3 style="text-align: center;">
+                        Зарегистрировать нового инвестора
+                </h3>
+                <form method="post">
+
+                    <label for="InvestorNameInput">Имя инвестора</label>
+                    <input id="InvestorNameInput" type="text"/>
+
+                    <label for="InvestorInterestInput">Сфера интересов</label>
+                    <input id="InvestorInterestInput" type="text"/>
+
+                    <input type="button" value="Зарегистрировать" id="SubmitBtn">
+
+                    <!-- todo -->
+                </form>
+        </div>
+
+        <div id="investorsList">
+            <table id="investorsTable">
+                <thead>
+                    <tr>
+                        <th>Инвестор</th>
+                        <th>Сфера интересов</th>
+                        <th>Список проинвестированных проектов</th>
+                        <th>Общая сумма инвестиций</th>
+                    </tr>
+                </thead>
+                <tbody id="investorsTableBody"></tbody>
+            </table>
+        </div>
     </body>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js">
-        
+        const urlParams = new URLSearchParams(window.location.search);
+        const pid = urlParams.get("pid");
+        if (pid == null) { // список всех инвесторов
+            $.get("/api/investors", function(data) { 
+                    if (data.hasOwnProperty('investors')) {
+                        console.log(data);
+                        let investors = data['investors']
+                        for (i = 0; i < investors.length; i++) {
+                            investor = investors[i];
+                            invProjects = investor.projects
+                            for (j = 0; j < invProjects.length; j++){
+                                project = invProjects[i];
+                                li = li + '<li id="projectID_'+project.id+'">'
+                                    + '<a href="/project?pid='+project.id+'"">'+project.name+'</a>'+'</li>'; 
+                            }
+                            tr = '<tr id="investorId_'+investor.id+'">' +
+                                '<td>'+investor.name+'</td>' +
+                                '<td>'+investor.interests+'</td>' +
+                                '<td>'+'<ul>'+li+'</ul>'+'</td>' +          
+                                '<td>'+investor.sum+'</td>' + // пусть это просто общая сумма всех инвестиций конкретного инвестора
+                                '</tr>';                              
+                            $('#investorsTableBody').append(tr);
+                        }
+                    }
+                })
+        } else { // список инвесторов, связанных с проектом pid
+            $.get("/api/investors?pid="+pid, function(data) {
+                if (data.hasOwnProperty('investors')) {
+                        console.log(data);
+                        let investors = data['investors']
+                        for (i = 0; i < investors.length; i++) {
+                            investor = investors[i];
+                            invProjects = investor.projects
+                            for (j = 0; j < invProjects.length; j++){
+                                project = invProjects[i];
+                                li = li + '<li id="projectID_'+project.id+'">'
+                                    + '<a href="/project?pid='+project.id+'"">'+project.name+'</a>'+'</li>'; 
+                            }
+                            tr = '<tr id="investorId_'+investor.id+'">' +
+                                '<td>'+investor.name+'</td>' +
+                                '<td>'+investor.interests+'</td>' +
+                                '<td>'+'<ul>'+li+'</ul>'+'</td>' +          
+                                '<td>'+investor.sum+'</td>' +   //вопрос в том, как доставать сумму, которую инвестор задонатил в конкретный проект
+                                '</tr>';                              
+                            $('#investorsTableBody').append(tr);
+                        }
+                    }
+            })
+
+        }
+    </script>
+
+    <script type="application/javascript">
+        $('#SubmitBtn').on('click', function(){
+            let investor_input = {
+                "name": $("#InvestorNameInput").val(),
+                "interests": $("#InvestorInterestsInput").val(),
+            };
+            $.post("/api/create_investor", JSON.stringify(investor_input), function(data){
+                console.log(data);
+            });
+        })       
     </script>
 
     <style>
+        table {
+            border: 1px solid black; /* Рамка вокруг таблицы */
+            border-collapse: collapse; /* Отображать только одинарные линии */
+            width: 100%;
+            table-layout: fixed;
+        }
+        th {
+            text-align: center; /* Выравнивание по левому краю */
+            padding: 0 1em;
+            border: 1px solid black; /* Граница вокруг ячеек */
+            background-color: white;
+        }
+        td {
+            text-align: center;
+            border: 1px solid black;
+            background-color: white;
+            padding: 0 1em;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        a {
+            text-decoration: none;
+        }
+
         .btn-group button {
             float: center;
         }

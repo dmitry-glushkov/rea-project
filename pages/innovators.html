@@ -1,20 +1,20 @@
 <html>
     <head>
         <div class="btn-group">
-            <button onclick="location.href='/projects'">проекты</button>
-            <button onclick="location.href='/investors'">инвесторы</button>
-            <button onclick="location.href='/innovators'">инноваторы</button>
-            <button onclick="location.href='/contractors'">исполнители</button>
+            <button onclick="location.href='/projects'">Проекты</button>
+            <button onclick="location.href='/investors'">Инвесторы</button>
+            <button onclick="location.href='/innovators'">Инноваторы</button>
+            <button onclick="location.href='/contractors'">Исполнители</button>
         </div>
     </head>
-
+<!-- добавить форму с созданием инноватора -->
     <body>
         <div style="padding: 2em 0;">
             <h2 style="text-align: center;"> Список инноваторов </h2>
             <table id="innovatorsTable">
                 <thead>
                     <tr>
-                        <th>Имя инноватора</th><th>Сферы интереса</th><th>Проекты</th>
+                        <th>Имя инноватора</th><th>Сферы интереса</th><th>Список проектов</th>
                     </tr>
                 </thead>
                 <tbody id="innovatorsTableBody"></tbody>
@@ -26,7 +26,7 @@
                 if (data.hasOwnProperty('innovators')) {
                     console.log(data);
                     let innovators = data['innovators']
-                    for (i = 0; i < innovator.length; i++) {
+                    for (i = 0; i < innovators.length; i++) {
                         innovator = innovators[i];
                         innProjects = innovator.projects
                         for (j = 0; j < innProjects.length; j++){
@@ -43,6 +43,8 @@
                     }
                 }
             })
+
+            
             
         </script>
 

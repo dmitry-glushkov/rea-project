@@ -1,28 +1,31 @@
 <html>
     <head>
         <div class="btn-group">
-            <button onclick="location.href='/projects'">проекты</button>
-            <button onclick="location.href='/investors'">инвесторы</button>
-            <button onclick="location.href='/innovators'">инноваторы</button>
-            <button onclick="location.href='/contractors'">исполнители</button>
+            <button onclick="location.href='/projects'">Проекты</button>
+            <button onclick="location.href='/investors'">Инвесторы</button>
+            <button onclick="location.href='/innovators'">Инноваторы</button>
+            <button onclick="location.href='/contractors'">Исполнители</button>
         </div>
     </head>
 
     <body>
         <div>
-            <h1 style="text-align: center;"> исполнители </h1> 
+            <h1 style="text-align: center;"> Исполнители </h1> 
         </div>
 
         <div id="createContractor">
                 <h3 style="text-align: center;">
-                        зарегестрировать нового исполнителя
+                        Зарегистрировать нового исполнителя
                 </h3>
                 <form method="post">
-                    <label for=""></label>
-                    <input id="" type="text">
 
-                    <label for=""></label>
-                    <input id="" type="text">
+                    <label for="ContractorNameInput">Имя исполнителя</label>
+                    <input id="ContractorNameInput" type="text"/>
+
+                    <label for="ContractorInterestsInput">Род деятельности</label>
+                    <input id="ContractorInterestsInput" type="text"/>
+
+                    <input type="button" value="Зарегистрировать" id="SubmitBtn">
 
                     <!-- todo -->
                 </form>
@@ -32,14 +35,12 @@
             <table id="contractorsTable">
                 <thead>
                     <tr>
-                        <th>исполнитель</th>
-                        <th>род деятельности</th>
-                        <th>список проектов</th>
+                        <th>Исполнитель</th>
+                        <th>Род деятельности</th>
+                        <th>Список проектов</th>
                     </tr>
                 </thead>
-                <tbody id="contractorsTableBody">
-                    <!-- сюда вставлять -->
-                </tbody>
+                <tbody id="contractorsTableBody"></tbody>
             </table>
         </div>
     </body>
@@ -51,24 +52,96 @@
         if (pid == null) { // список всех исполнителей
             $.get("/api/contractors", function(data) {
                 if (data.hasOwnProperty('contractors')) {
-                    // TODO
+                    console.log(data);
+                    let contractors = data['contractors']
+                    for (i = 0; i < contractors.length; i++) {
+                        contractor = contractors[i];
+                        conProjects = contractor.projects
+                        for (j = 0; j < conProjects.length; j++){
+                            project = conProjects[i];
+                            li = li + '<li id="projectID_'+project.id+'">' 
+                                + '<a href="/project?pid='+project.id+'"">'+project.name+'</a>'+'</li>'; 
+                        }
+                        tr = '<tr id="contractorId_'+contractor.id+'">' +
+                            '<td>'+contractor.name+'</td>' +
+                            '<td>'+contractor.interests+'</td>' +
+                            '<td>'+'<ul>'+li+'</ul>'+'</td>' +    
+                            '</tr>';                             
+                        $('#contractorsTableBody').append(tr);
+                    }
+
                 }
             });
         } else { // список исполнителей, связанных с проектом pid
             $.get("/api/contractors?pid="+pid, function(data) {
                 if (data.hasOwnProperty('contractors')) {
-                    // TODO
+                    console.log(data);
+                    let contractors = data['contractors']
+                    for (i = 0; i < contractors.length; i++) {
+                        contractor = contractors[i];
+                        conProjects = contractor.projects
+                        for (j = 0; j < conProjects.length; j++){
+                            project = conProjects[i];
+                            li = li + '<li id="projectID_'+project.id+'">' 
+                                + '<a href="/project?pid='+project.id+'"">'+project.name+'</a>'+'</li>'; 
+                        }
+                        tr = '<tr id="contractorId_'+contractor.id+'">' +
+                            '<td>'+contractor.name+'</td>' +
+                            '<td>'+contractor.interests+'</td>' +
+                            '<td>'+'<ul>'+li+'</ul>'+'</td>' +    
+                            '</tr>';                             
+                        $('#contractorsTableBody').append(tr);
+                    }
                 }
             });
         }
+        
     </script>
-    
+
+    <script type="application/javascript">
+        $('#SubmitBtn').on('click', function(){
+            let contractor_input = {
+                "name": $("#ContractorNameInput").val(),
+                "interests": $("#ContractorInterestsInput").val(),
+            };
+            $.post("/api/create_contractor", JSON.stringify(contractor_input), function(data){
+                console.log(data);
+            });
+        })     
+    </script>
+
     <style>
+        table {
+            border: 1px solid black; /* Рамка вокруг таблицы */
+            border-collapse: collapse; /* Отображать только одинарные линии */
+            width: 100%;
+            table-layout: fixed;
+        }
+        th {
+            text-align: center; /* Выравнивание по левому краю */
+            padding: 0 1em;
+            border: 1px solid black; /* Граница вокруг ячеек */
+            background-color: white;
+        }
+        td {
+            text-align: center;
+            border: 1px solid black;
+            background-color: white;
+            padding: 0 1em;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        a {
+            text-decoration: none;
+        }
+
         .btn-group button {
             float: center;
         }
     </style>
+
 </html>
 <!-- 
-    Имя | сферы интереса | Род деятельности (сделать как UL) | Список проектов в которых участвовали (как UL с ссылками)
+    Имя | Род деятельности (сделать как UL) | Список проектов в которых участвовали (как UL с ссылками)
  -->

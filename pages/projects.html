@@ -1,25 +1,25 @@
 <html>
     <head>
         <div class="btn-group">
-            <button onclick="location.href='/projects'">проекты</button>
-            <button onclick="location.href='/investors'">инвесторы</button>
-            <button onclick="location.href='/innovators'">инноваторы</button>
-            <button onclick="location.href='/contractors'">исполнители</button>
+            <button onclick="location.href='/projects'">Проекты</button>
+            <button onclick="location.href='/investors'">Инвесторы</button>
+            <button onclick="location.href='/innovators'">Инноваторы</button>
+            <button onclick="location.href='/contractors'">Исполнители</button>
         </div>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     </head>
     <body>
 
     <div>
-        <h3 style="text-align: center;">создать новый проект</h3>
+        <h3 style="text-align: center;">Создать новый проект</h3>
         <form method="post" style="text-align: center;">
-            <label for="ProjectNameInput">название проекта</label>
+            <label for="ProjectNameInput">Название проекта</label>
             <input id="ProjectNameInput" type="text"/>
 
-            <label for="ProjectOwnerInput">владелец</label>
+            <label for="ProjectOwnerInput">Владелец</label>
             <input id="ProjectOwnerInput" type="text"/>
 
-            <label for="ProjectDescInput">описание проекта</label>
+            <label for="ProjectDescInput">Описание проекта</label>
             <input id="ProjectDescInput" type="text"/>
 
             <input type="button" value="Submit" id="SubmitBtn">
@@ -32,7 +32,7 @@
         <table id="projectsTable">
             <thead>
                 <tr>
-                    <th>владелец проекта</th><th>имя проекта</th><th>описание проекта</th><th>собрано/цель</th>
+                    <th>Владелец проекта</th><th>Имя проекта</th><th>Описание проекта</th><th>Собрано/Цель</th>
                 </tr>
             </thead>
             <tbody id="projectsTableBody"></tbody>
