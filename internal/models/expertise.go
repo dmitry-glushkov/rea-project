@@ -13,7 +13,16 @@ type Expertise struct {
 }
 
 func (exp Expertise) Save(ctx context.Context, db *pgx.Conn) error {
-	return nil
+	_, err := db.Exec(
+		ctx,
+		`
+		insert into expertises
+			(pid, content)
+			values ($1, $2);	
+		`,
+		exp.Pid, exp.Content,
+	)
+	return err
 }
 
 func (exp Expertise) SaveMock(ctx context.Context, db *pgx.Conn) error {

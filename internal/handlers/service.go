@@ -35,6 +35,7 @@ func (impl *Implementation) registerHTTP() {
 	impl.Router.GET("/api/docs", impl.GetDocs())
 	impl.Router.GET("/api/risks", impl.GetRisks())
 	impl.Router.GET("/api/work_fee", impl.GetWorkFee())
+	impl.Router.GET("/api/expertise", impl.GetExpertise())
 
 	// CREATE
 	impl.Router.POST("/api/create_investment", impl.CreateInvestment())
@@ -47,6 +48,7 @@ func (impl *Implementation) registerHTTP() {
 	impl.Router.POST("/api/create_doc", impl.CreateDoc())
 	impl.Router.POST("/api/create_risk", impl.CreateRisk())
 	impl.Router.POST("/api/create_work_fee", impl.CreateWorkFee())
+	impl.Router.POST("/api/create_expertise", impl.CreateExpertise())
 
 	// WEB MORDA
 	impl.Router.LoadHTMLGlob("pages/*")
