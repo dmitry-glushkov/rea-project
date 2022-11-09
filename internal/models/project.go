@@ -2,7 +2,6 @@ package models
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/jackc/pgx/v4"
 )
@@ -23,17 +22,25 @@ func (p *Project) Save(ctx context.Context, db *pgx.Conn) error {
 		ctx,
 		`
 			INSERT INTO projects
-				(name, desc, owner_id)
+				(name, desc, owner)
 				VALUES ($1, $2, $3);
 		`,
 		p.Name, p.Desc, p.Owner,
 	)
 	if err != nil {
-		err = fmt.Errorf("...: %w", err)
 		return err
 	}
 
-	return nil
+	_, err = db.Exec(
+		ctx,
+		`
+		update innovators
+			set pids = array_append(innovators.pids, $1)
+			where name = $2;
+		`,
+		p.ID, p.Owner,
+	)
+	return err
 }
 
 func (p *Project) SaveMock(ctx context.Context, db *pgx.Conn) error {

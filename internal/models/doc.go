@@ -25,6 +25,19 @@ func (d Doc) Save(ctx context.Context, db *pgx.Conn) error {
 		`,
 		d.Title, d.Author, d.Dcm, d.Pid, d.Cid,
 	)
+	if err != nil {
+		return err
+	}
+
+	_, err = db.Exec(
+		ctx,
+		`
+		update contracotrs
+			set pids = array_append(contractors.pids, $1)
+			where id = $2;
+		`,
+		d.Pid, d.Cid,
+	)
 	return err
 }
 

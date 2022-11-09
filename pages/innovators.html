@@ -50,14 +50,16 @@
                         innovator = innovators[i];
                         innProjects = innovator.projects
                         var li = []
+                        if (innProjects != null) {
                             innProjects.forEach(function (project) {
-                                li.push('<li id="projectID_'+project.id+'">' 
-                                    + '<a href="/project?pid='+project.id+'"">'+project.name+'</a>'+'</li>'); 
-                            })
-                            tr = '<tr id="investorId_'+innovator.id+'">' +
-                                '<td>'+innovator.name+'</td>' +
-                                '<td>'+'<ul>'+li.join(" ")+'</ul>'+'</td>'+'</tr>';                              
-                            $('#innovatorsTableBody').append(tr);                
+                            li.push('<li id="projectID_'+project.id+'">' 
+                                + '<a href="/project?pid='+project.id+'"">'+project.name+'</a>'+'</li>'); 
+                        })
+                        }
+                        tr = '<tr id="investorId_'+innovator.id+'">' +
+                            '<td>'+innovator.name+'</td>' +
+                            '<td>'+'<ul>'+li.join(" ")+'</ul>'+'</td>'+'</tr>';                              
+                        $('#innovatorsTableBody').append(tr);                
                     }
                 }
             })
