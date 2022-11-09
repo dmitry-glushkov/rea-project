@@ -14,7 +14,6 @@ type GetProjectsRequest struct {
 
 type GetProjectsResponse struct {
 	Projects []models.Project `json:"projects"`
-	Count    int              `json:"count"`
 }
 
 func (impl *Implementation) GetProjects() gin.HandlerFunc {
@@ -28,9 +27,9 @@ func (impl *Implementation) GetProjects() gin.HandlerFunc {
 
 		var (
 			projects []models.Project
-			count    int
 		)
-		projects, count, err = models.GetProjectsMock(c.Request.Context(), impl.DB, r.Page, r.Limit) // TODO mock
+		// projects, err = models.GetProjects(c.Request.Context(), impl.DB, r.Page, r.Limit)
+		projects, err = models.GetProjectsMock(c.Request.Context(), impl.DB, r.Page, r.Limit) // TODO mock
 		if err != nil {
 			c.String(http.StatusInternalServerError, err.Error())
 			return
@@ -38,7 +37,6 @@ func (impl *Implementation) GetProjects() gin.HandlerFunc {
 
 		c.JSON(http.StatusOK, GetProjectsResponse{
 			Projects: projects,
-			Count:    count,
 		})
 	}
 }

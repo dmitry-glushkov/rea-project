@@ -27,11 +27,10 @@ func (g *Stage) Save(ctx context.Context, db *pgx.Conn) error {
 		`,
 		g.PID, g.Target, g.DueDate,
 	)
-	if err != nil {
-		err = fmt.Errorf("...: %w", err)
-		return err
-	}
+	return err
+}
 
+func (g *Stage) SaveMock(ctx context.Context, db *pgx.Conn) error {
 	return nil
 }
 

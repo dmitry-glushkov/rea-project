@@ -29,7 +29,8 @@ func (impl *Implementation) CreateInvestment() gin.HandlerFunc {
 			PID: r.Pid,
 			Val: r.Val,
 		}
-		err = investment.Save(c.Request.Context(), impl.DB)
+		// err = investment.Save(c.Request.Context(), impl.DB)
+		err = investment.SaveMock(c.Request.Context(), impl.DB) // todo mock
 		if err != nil {
 			c.String(http.StatusInternalServerError, err.Error())
 			return

@@ -37,7 +37,8 @@ func (impl *Implementation) CreateStage() gin.HandlerFunc {
 			Target:  r.Target,
 			DueDate: dd.Format("02.01.2006"),
 		}
-		err = goal.Save(c.Request.Context(), impl.DB)
+		// err = goal.Save(c.Request.Context(), impl.DB)
+		err = goal.SaveMock(c.Request.Context(), impl.DB) // todo mock
 		if err != nil {
 			c.String(http.StatusInternalServerError, err.Error())
 			return

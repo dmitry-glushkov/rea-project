@@ -6,6 +6,7 @@
             <button onclick="location.href='/innovators'">Инноваторы</button>
             <button onclick="location.href='/contractors'">Исполнители</button>
         </div>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     </head>
 
     <body>
@@ -43,7 +44,7 @@
         </div>
     </body>
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js">
+    <script>
         const urlParams = new URLSearchParams(window.location.search);
         const pid = urlParams.get("pid");
 
@@ -55,15 +56,15 @@
                     for (i = 0; i < contractors.length; i++) {
                         contractor = contractors[i];
                         conProjects = contractor.projects
-                        for (j = 0; j < conProjects.length; j++){
-                            project = conProjects[i];
-                            li = li + '<li id="projectID_'+project.id+'">' 
-                                + '<a href="/project?pid='+project.id+'"">'+project.name+'</a>'+'</li>'; 
-                        }
+                        var li = []
+                        conProjects.forEach(function (project) {
+                            li.push('<li id="projectID_'+project.id+'">' 
+                                + '<a href="/project?pid='+project.id+'"">'+project.name+'</a>'+'</li>'); 
+                        }) 
                         tr = '<tr id="contractorId_'+contractor.id+'">' +
                             '<td>'+contractor.name+'</td>' +
-                            '<td>'+contractor.interests+'</td>' +
-                            '<td>'+'<ul>'+li+'</ul>'+'</td>' +    
+                            '<td>'+contractor.interest+'</td>' +
+                            '<td>'+'<ul>'+li.join(" ")+'</ul>'+'</td>' +    
                             '</tr>';                             
                         $('#contractorsTableBody').append(tr);
                     }
@@ -78,15 +79,15 @@
                     for (i = 0; i < contractors.length; i++) {
                         contractor = contractors[i];
                         conProjects = contractor.projects
-                        for (j = 0; j < conProjects.length; j++){
-                            project = conProjects[i];
-                            li = li + '<li id="projectID_'+project.id+'">' 
-                                + '<a href="/project?pid='+project.id+'"">'+project.name+'</a>'+'</li>'; 
-                        }
+                        var li = []
+                        conProjects.forEach(function (project) {
+                            li.push('<li id="projectID_'+project.id+'">' 
+                                + '<a href="/project?pid='+project.id+'"">'+project.name+'</a>'+'</li>'); 
+                        }) 
                         tr = '<tr id="contractorId_'+contractor.id+'">' +
                             '<td>'+contractor.name+'</td>' +
-                            '<td>'+contractor.interests+'</td>' +
-                            '<td>'+'<ul>'+li+'</ul>'+'</td>' +    
+                            '<td>'+contractor.interest+'</td>' +
+                            '<td>'+'<ul>'+li.join(" ")+'</ul>'+'</td>' +    
                             '</tr>';                             
                         $('#contractorsTableBody').append(tr);
                     }

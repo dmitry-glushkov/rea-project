@@ -6,6 +6,7 @@
             <button onclick="location.href='/innovators'">инноваторы</button>
             <button onclick="location.href='/contractors'">исполнители</button>
         </div>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     </head>
 
     <div style="padding: 2em 0;">
@@ -19,7 +20,7 @@
         <!-- todo список (таблица) экспертиз по проекту (что вообще есть экспертиза? какая-то оценка?) -->
     </body>
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js">
+    <script>
         $.get("/api/expertise?pid="+pid, function(data) {
             // TODO заполнить список контрактов с исполнителями (имя исполнителя, задание, документ, дата)
             if (data.hasOwnProperty('project_info')) { //добавление названия проекта в заголовок

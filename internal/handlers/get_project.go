@@ -26,6 +26,7 @@ func (impl *Implementation) GetProject() gin.HandlerFunc {
 		}
 
 		var project models.Project
+		// project, err = models.GetProject(c.Request.Context(), impl.DB, r.PID)
 		project, err = models.GetProjectMock(c.Request.Context(), impl.DB, r.PID) // TODO mock
 		if err != nil {
 			c.String(http.StatusInternalServerError, err.Error())
@@ -33,6 +34,7 @@ func (impl *Implementation) GetProject() gin.HandlerFunc {
 		}
 
 		var stages []models.Stage
+		// stages, err = models.GetStages(c.Request.Context(), impl.DB, r.PID)
 		stages, err = models.GetStagesMock(c.Request.Context(), impl.DB, r.PID) // TODO mock
 		if err != nil {
 			c.String(http.StatusInternalServerError, err.Error())

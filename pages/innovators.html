@@ -6,6 +6,7 @@
             <button onclick="location.href='/innovators'">Инноваторы</button>
             <button onclick="location.href='/contractors'">Исполнители</button>
         </div>
+        <script type="application/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     </head>
 
     <div>
@@ -42,7 +43,7 @@
             </table>
         </div>
 
-        <script type="application/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js">
+        <script>
             $.get("/api/innovators", function(data) { //у каждого объекта "инноватор" должны быть как минимум сфера интересов, имя и массив проектов с id и названием
                 if (data.hasOwnProperty('innovators')) {
                     console.log(data);

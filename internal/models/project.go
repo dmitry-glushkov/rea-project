@@ -19,25 +19,29 @@ type Project struct {
 
 // Save ...
 func (p *Project) Save(ctx context.Context, db *pgx.Conn) error {
-	// _, err := db.Exec(
-	// 	ctx,
-	// 	`
-	// 		INSERT INTO projects
-	// 			(name, desc, owner_id)
-	// 			VALUES ($1, $2, $3);
-	// 	`,
-	// 	p.Name, p.Desc, p.Owner,
-	// )
-	// if err != nil {
-	// 	err = fmt.Errorf("...: %w", err)
-	// 	return err
-	// }
+	_, err := db.Exec(
+		ctx,
+		`
+			INSERT INTO projects
+				(name, desc, owner_id)
+				VALUES ($1, $2, $3);
+		`,
+		p.Name, p.Desc, p.Owner,
+	)
+	if err != nil {
+		err = fmt.Errorf("...: %w", err)
+		return err
+	}
 
 	return nil
 }
 
+func (p *Project) SaveMock(ctx context.Context, db *pgx.Conn) error {
+	return nil
+}
+
 // GetProjects ...
-func GetProjects(ctx context.Context, db *pgx.Conn, page, limit int) ([]Project, int, error) {
+func GetProjects(ctx context.Context, db *pgx.Conn, page, limit int) ([]Project, error) {
 	rows, err := db.Query(
 		ctx,
 		`
@@ -47,7 +51,7 @@ func GetProjects(ctx context.Context, db *pgx.Conn, page, limit int) ([]Project,
 	)
 	if err != nil {
 		err = fmt.Errorf("...: %w", err)
-		return nil, 0, err
+		return nil, err
 	}
 	defer rows.Close()
 
@@ -57,13 +61,13 @@ func GetProjects(ctx context.Context, db *pgx.Conn, page, limit int) ([]Project,
 		err = rows.Scan()
 		if err != nil {
 			err = fmt.Errorf("...: %w", err)
-			return nil, 0, err
+			return nil, err
 		}
 
 		projects = append(projects, project)
 	}
 
-	return projects, 0, nil // TODO count
+	return projects, nil
 }
 
 func GetProject(ctx context.Context, db *pgx.Conn, pid int) (Project, error) {
@@ -108,7 +112,7 @@ func GetProjectMock(ctx context.Context, db *pgx.Conn, pid int) (Project, error)
 	}, nil
 }
 
-func GetProjectsMock(ctx context.Context, db *pgx.Conn, page int, limit int) ([]Project, int, error) {
+func GetProjectsMock(ctx context.Context, db *pgx.Conn, page int, limit int) ([]Project, error) {
 	return []Project{
 		{
 			ID:     1,
@@ -147,5 +151,5 @@ func GetProjectsMock(ctx context.Context, db *pgx.Conn, page int, limit int) ([]
 			Sum:    1780000,
 			Target: 3000000,
 		},
-	}, 5, nil
+	}, nil
 }

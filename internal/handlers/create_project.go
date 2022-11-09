@@ -30,7 +30,8 @@ func (impl *Implementation) CreateProject() gin.HandlerFunc {
 			Desc:  r.Desc,
 			Owner: r.Owner,
 		}
-		err = project.Save(c.Request.Context(), impl.DB)
+		// err = project.Save(c.Request.Context(), impl.DB)
+		err = project.SaveMock(c.Request.Context(), impl.DB) // todo mock
 		if err != nil {
 			c.String(http.StatusInternalServerError, err.Error())
 			return

@@ -33,6 +33,10 @@ func (d *Investment) Save(ctx context.Context, db *pgx.Conn) error {
 	return nil
 }
 
+func (d *Investment) SaveMock(ctx context.Context, db *pgx.Conn) error {
+	return nil
+}
+
 func GetProjectInvestments(ctx context.Context, db *pgx.Conn, pid int) ([]Investment, error) {
 	rows, err := db.Query(
 		ctx,

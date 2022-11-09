@@ -26,6 +26,7 @@ func (impl *Implementation) GetInvestments() gin.HandlerFunc {
 		}
 
 		var investments []models.Investment
+		// investments, err = models.GetInvestments(c.Request.Context(), impl.DB, r.PID)
 		investments, err = models.GetInvestmentsMock(c.Request.Context(), impl.DB, r.PID) // TODO mock
 		if err != nil {
 			c.String(http.StatusInternalServerError, err.Error())
@@ -33,6 +34,7 @@ func (impl *Implementation) GetInvestments() gin.HandlerFunc {
 		}
 
 		var project models.Project
+		// project, err = models.GetProject(c.Request.Context(), impl.DB, r.PID)
 		project, err = models.GetProjectMock(c.Request.Context(), impl.DB, r.PID) // TODO mock
 		if err != nil {
 			c.String(http.StatusInternalServerError, err.Error())

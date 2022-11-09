@@ -6,6 +6,7 @@
             <button onclick="location.href='/innovators'">Инноваторы</button>
             <button onclick="location.href='/contractors'">Исполнители</button>
         </div>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     </head>
     
     <body>
@@ -44,7 +45,7 @@
         </div>
     </body>
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js">
+    <script>
         const urlParams = new URLSearchParams(window.location.search);
         const pid = urlParams.get("pid");
         if (pid == null) { // список всех инвесторов
@@ -55,16 +56,16 @@
                         for (i = 0; i < investors.length; i++) {
                             investor = investors[i];
                             invProjects = investor.projects
-                            for (j = 0; j < invProjects.length; j++){
-                                project = invProjects[i];
-                                li = li + '<li id="projectID_'+project.id+'">'
-                                    + '<a href="/project?pid='+project.id+'"">'+project.name+'</a>'+'</li>'; 
-                            }
+                            var li = []
+                            invProjects.forEach(function (project) {
+                                li.push('<li id="projectID_'+project.id+'">' 
+                                    + '<a href="/project?pid='+project.id+'"">'+project.name+'</a>'+'</li>'); 
+                            }) 
                             tr = '<tr id="investorId_'+investor.id+'">' +
                                 '<td>'+investor.name+'</td>' +
                                 '<td>'+investor.interests+'</td>' +
-                                '<td>'+'<ul>'+li+'</ul>'+'</td>' +          
-                                '<td>'+investor.sum+'</td>' + // пусть это просто общая сумма всех инвестиций конкретного инвестора
+                                '<td>'+'<ul>'+li.join(" ")+'</ul>'+'</td>' +          
+                                '<td>'+investor.total+'</td>' + // пусть это просто общая сумма всех инвестиций конкретного инвестора
                                 '</tr>';                              
                             $('#investorsTableBody').append(tr);
                         }
@@ -78,16 +79,16 @@
                         for (i = 0; i < investors.length; i++) {
                             investor = investors[i];
                             invProjects = investor.projects
-                            for (j = 0; j < invProjects.length; j++){
-                                project = invProjects[i];
-                                li = li + '<li id="projectID_'+project.id+'">'
-                                    + '<a href="/project?pid='+project.id+'"">'+project.name+'</a>'+'</li>'; 
-                            }
+                            var li = []
+                            invProjects.forEach(function (project) {
+                                li.push('<li id="projectID_'+project.id+'">' 
+                                    + '<a href="/project?pid='+project.id+'"">'+project.name+'</a>'+'</li>'); 
+                            }) 
                             tr = '<tr id="investorId_'+investor.id+'">' +
                                 '<td>'+investor.name+'</td>' +
                                 '<td>'+investor.interests+'</td>' +
-                                '<td>'+'<ul>'+li+'</ul>'+'</td>' +          
-                                '<td>'+investor.sum+'</td>' +   //вопрос в том, как доставать сумму, которую инвестор задонатил в конкретный проект
+                                '<td>'+'<ul>'+li.join(" ")+'</ul>'+'</td>' +          
+                                '<td>'+investor.total+'</td>' +   //вопрос в том, как доставать сумму, которую инвестор задонатил в конкретный проект
                                 '</tr>';                              
                             $('#investorsTableBody').append(tr);
                         }

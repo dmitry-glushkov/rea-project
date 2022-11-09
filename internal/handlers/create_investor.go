@@ -8,7 +8,8 @@ import (
 )
 
 type CreateInvestorRequest struct {
-	Login string `json:"login"`
+	Name      string `json:"name"`
+	Interests string `json:"interests"`
 }
 
 type CreateInvestorResponse struct{}
@@ -24,9 +25,11 @@ func (impl *Implementation) CreateInvestor() gin.HandlerFunc {
 		}
 
 		investor := models.Investor{
-			Login: r.Login,
+			Name:      r.Name,
+			Interests: r.Interests,
 		}
-		err = investor.Save(c.Request.Context(), impl.DB)
+		// err = investor.Save(c.Request.Context(), impl.DB)
+		err = investor.SaveMock(c.Request.Context(), impl.DB) // todo mock
 		if err != nil {
 			c.String(http.StatusInternalServerError, err.Error())
 			return
