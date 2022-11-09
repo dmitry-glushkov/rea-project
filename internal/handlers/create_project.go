@@ -26,9 +26,9 @@ func (impl *Implementation) CreateProject() gin.HandlerFunc {
 		}
 
 		project := models.Project{
-			Name:    r.Name,
-			Desc:    r.Desc,
-			OwnerID: r.Owner,
+			Name:  r.Name,
+			Desc:  r.Desc,
+			Owner: r.Owner,
 		}
 		// err = project.Save(c.Request.Context(), impl.DB)
 		err = project.SaveMock(c.Request.Context(), impl.DB) // todo mock
