@@ -82,6 +82,7 @@
         } else { // список инвесторов, связанных с проектом pid
             $.get("/api/investors?pid="+pid, function(data) {
                 if (data.hasOwnProperty('investors')) {
+                        var projname;
                         console.log(data);
                         let investors = data['investors']
                         for (i = 0; i < investors.length; i++) {
@@ -100,7 +101,7 @@
                                 '<td>'+investor.name+'</td>' +
                                 '<td>'+investor.interests+'</td>' +
                                 '<td>'+'<ul>'+li.join(" ")+'</ul>'+'</td>' +          
-                                '<td>'+investor.total+'</td>' +   //вопрос в том, как доставать сумму, которую инвестор задонатил в конкретный проект
+                                '<td>'+investor.total+'</td>' + 
                                 '</tr>';                              
                             $('#investorsTableBody').append(tr);
                         };

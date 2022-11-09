@@ -9,8 +9,10 @@
         <script type="application/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     </head>
 
-    <div>
-        <h1 style="text-align: center;"> Инноваторы </h1> 
+    <div style="padding: 2em 0;">
+        <h2 style="text-align: center;"> 
+            <div id="innovatorsHeader">Инноваторы<br></div>
+        </h2>            
     </div>
 
     <div id="createInnovator">
@@ -51,18 +53,22 @@
                     for (i = 0; i < innovators.length; i++) {
                         innovator = innovators[i];
                         innProjects = innovator.projects
-                        for (j = 0; j < innProjects.length; j++){
-                            project = innProjects[i];
-                            li = li + '<li id="projectID_'+project.id+'">' //не уверен, что так правильно конкатенировать, 
-                                + '<a href="/project?pid='+project.id+'"">'+project.name+'</a>'+'</li>'; //но конкатенировать надо
-                        }
-                        tr = '<tr id="innovatorId_'+innovator.id+'">' +
-                            '<td>'+innovator.name+'</td>' +
-                            '<td>'+innovator.interests+'</td>' +
-                            '<td>'+'<ul>'+li+'</ul>'+'</td>' +           //и потом сконкатенированные эл-ты списка пихаем в теги <ul> внутри <td>
-                            '</tr>';                                     //мысль короче такая
-                        $('#innovatorsTableBody').append(tr);
+                        var li = []
+                            innProjects.forEach(function (project) {
+                                li.push('<li id="projectID_'+project.id+'">' 
+                                    + '<a href="/project?pid='+project.id+'"">'+project.name+'</a>'+'</li>'); 
+                                if (project.id == pid){
+                                    projname = project.name;
+                                };
+                            })
+                            tr = '<tr id="investorId_'+innovator.id+'">' +
+                                '<td>'+innovator.name+'</td>' +
+                                '<td>'+innovator.interests+'</td>' +
+                                '<td>'+'<ul>'+li.join(" ")+'</ul>'+'</td>'+'</tr>';                              
+                            $('#innovatorsTableBody').append(tr);                
                     }
+                    head = '<span>'+'"'+projname+'"'+'</span>';
+                     $('#innovatorsHeader').append(head);
                 }
             })
 
