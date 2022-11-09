@@ -10,8 +10,11 @@
     </head>
 
     <body>
-        <div>
-            <h1 style="text-align: center;"> Исполнители </h1> 
+        
+        <div style="padding: 2em 0;">
+            <h2 style="text-align: center;"> 
+                <div id="contractorsHeader">Исполнители<br></div>
+            </h2>            
         </div>
 
         <div id="createContractor">
@@ -74,6 +77,7 @@
         } else { // список исполнителей, связанных с проектом pid
             $.get("/api/contractors?pid="+pid, function(data) {
                 if (data.hasOwnProperty('contractors')) {
+                    var projname;
                     console.log(data);
                     let contractors = data['contractors']
                     for (i = 0; i < contractors.length; i++) {
@@ -83,6 +87,9 @@
                         conProjects.forEach(function (project) {
                             li.push('<li id="projectID_'+project.id+'">' 
                                 + '<a href="/project?pid='+project.id+'"">'+project.name+'</a>'+'</li>'); 
+                            if (project.id == pid){
+                                projname = project.name;
+                            };
                         }) 
                         tr = '<tr id="contractorId_'+contractor.id+'">' +
                             '<td>'+contractor.name+'</td>' +
@@ -90,7 +97,11 @@
                             '<td>'+'<ul>'+li.join(" ")+'</ul>'+'</td>' +    
                             '</tr>';                             
                         $('#contractorsTableBody').append(tr);
+                        
                     }
+                    head = '<span>'+'"'+projname+'"'+'</span>';
+                     $('#contractorsHeader').append(head);
+                    
                 }
             });
         }

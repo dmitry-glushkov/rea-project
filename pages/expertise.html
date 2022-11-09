@@ -16,22 +16,23 @@
     </div>
 
     <body>
-        <!-- todo создать новую эскпертизу (pid, додумать что есть в экспертизе) -->
-        <!-- todo список (таблица) экспертиз по проекту (что вообще есть экспертиза? какая-то оценка?) -->
+        <div>
+            <ul id="expertiseList"></ul>
+        </div>
     </body>
 
     <script>
         const urlParams = new URLSearchParams(window.location.search);
         const pid = urlParams.get("pid");
-
         $.get("/api/expertise?pid="+pid, function(data) {
             // TODO заполнить список контрактов с исполнителями (имя исполнителя, задание, документ, дата)
-            if (data.hasOwnProperty('project_info')) { //добавление названия проекта в заголовок
-                    let project = data['project_info']
-                    head = '<span>'+
-                        project.name
-                        +'</span>';
-                    $('#expertiseHeader').append(head);
+            if (data.hasOwnProperty('expertises')) { //добавление названия проекта в заголовок
+                    let expretises = data['expertises']
+                    for (i = 0; i < expretises.length; i++) {
+                        expertise = expretises[i];
+                        li = '<li>'+expertise.content+'</li>';
+                        $('#expertiseList').append(li);                       
+                    }
                 }
         })
         

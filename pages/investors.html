@@ -10,9 +10,17 @@
     </head>
     
     <body>
-        <div>
+        <!-- <div>
             <h1 style="text-align: center;"> Инвесторы </h1> 
+        </div> -->
+        <div style="padding: 2em 0;">
+            <h2 style="text-align: center;"> 
+                <div id="investorsHeader">Инвесторы<br></div>
+            </h2>
+            
         </div>
+        <br>
+
 
         <div id="createInvestor">
                 <h3 style="text-align: center;">
@@ -83,7 +91,11 @@
                             invProjects.forEach(function (project) {
                                 li.push('<li id="projectID_'+project.id+'">' 
                                     + '<a href="/project?pid='+project.id+'"">'+project.name+'</a>'+'</li>'); 
-                            }) 
+                                if (project.id == pid){
+                                    projname = project.name;
+                                };
+                            })
+                             
                             tr = '<tr id="investorId_'+investor.id+'">' +
                                 '<td>'+investor.name+'</td>' +
                                 '<td>'+investor.interests+'</td>' +
@@ -91,7 +103,9 @@
                                 '<td>'+investor.total+'</td>' +   //вопрос в том, как доставать сумму, которую инвестор задонатил в конкретный проект
                                 '</tr>';                              
                             $('#investorsTableBody').append(tr);
-                        }
+                        };
+                        head = '<span>'+'"'+projname+'"'+'</span>';
+                        $('#investorsHeader').append(head);
                     }
             })
 

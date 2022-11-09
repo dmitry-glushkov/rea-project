@@ -11,13 +11,15 @@
 
     <div style="padding: 2em 0;">
         <h2 style="text-align: center;"> 
-            <div id="RisksHeader">Риски проекта<br></div>
+            <div id="RisksHeader">Возможные Риски проекта<br></div>
         </h2>
         
     </div>
 
     <body>
-        <!-- todo список оценок рисков проекта (риск(текст), план действий (текст), оценка (int деньги)) -->
+        <div>
+            <ul id="risksList"></ul>
+        </div>
     </body>
 
     <script>
@@ -25,13 +27,20 @@
         const pid = urlParams.get("pid");
 
         $.get("/api/risks?pid="+pid, function(data) {
-            // TODO заполнить список контрактов с исполнителями (имя исполнителя, задание, документ, дата)
-            if (data.hasOwnProperty('project_info')) { //добавление названия проекта в заголовок
-                    let project = data['project_info']
-                    head = '<span>'+
-                        project.name
-                        +'</span>';
-                    $('#risksHeader').append(head);
+            console.log(data)
+            if (data.hasOwnProperty('risks')) {
+                    let risks = data['risks']
+                    for (i = 0; i < risks.length; i++) {
+                        risk = risks[i];
+                        li = '<li>'
+                            +'<span>'+'Угроза: '+'</span>'
+                            +risk.risk+'<br>'
+                            +'<span>'+'Способ устранения: '+'</span>'
+                            +risk.plan+'<br>'
+                            +'<span>'+'Возможные издержки: '+'</span>'
+                            +risk.sum+'</li>'+'<hr>';
+                        $('#risksList').append(li);                 
+                    }
                 }
         })
         

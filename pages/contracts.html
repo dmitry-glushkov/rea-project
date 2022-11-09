@@ -26,12 +26,30 @@
         </div>
     </body>
 
+    <body>
+        <div>
+            <ul id="contractsList"></ul>
+        </div>
+    </body>
+
     <script>
-        $.get("/api/contracts?pid="+pid, function(data) {
-            // TODO заполнить список контрактов с исполнителями (имя исполнителя, задание, документ, дата)
-        })
         const urlParams = new URLSearchParams(window.location.search)
         const pid = urlParams.get("pid")
+        $.get("/api/docs?pid="+pid, function(data) {
+            console.log(data);
+            if (data.hasOwnProperty('docs')) {
+                    let docs = data['docs']
+                    for (i = 0; i < docs.length; i++) {
+                        doc = docs[i];
+                        li = '<li>'+doc.title+'<br>'
+                            +doc.dcm+'</li>'+'<hr>';
+                        $('#contractsList').append(li);                 
+                    }
+                }
+
+            // TODO заполнить список контрактов с исполнителями (имя исполнителя, задание, документ, дата)
+        })
+        
         
     </script>
         
