@@ -21,6 +21,9 @@
     </body>
 
     <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const pid = urlParams.get("pid");
+
         $.get("/api/risks?pid="+pid, function(data) {
             // TODO заполнить список контрактов с исполнителями (имя исполнителя, задание, документ, дата)
             if (data.hasOwnProperty('project_info')) { //добавление названия проекта в заголовок
