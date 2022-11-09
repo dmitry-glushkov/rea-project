@@ -4,11 +4,13 @@ import (
 	"context"
 
 	"github.com/jackc/pgx/v4"
+	"github.com/lib/pq"
 )
 
 type Innovator struct {
-	ID       int       `json:"id"`
-	Name     string    `json:"name"`
+	ID       int    `json:"id"`
+	Name     string `json:"name"`
+	Pids     pq.Int32Array
 	Projects []Project `json:"projects"`
 }
 
@@ -33,7 +35,8 @@ func GetInnovators(ctx context.Context, db *pgx.Conn) ([]Innovator, error) {
 	rows, err := db.Query(
 		ctx,
 		`
-		
+		select id, name, pids
+			from innovators
 		`,
 	)
 	if err != nil {
@@ -42,16 +45,57 @@ func GetInnovators(ctx context.Context, db *pgx.Conn) ([]Innovator, error) {
 	defer rows.Close()
 
 	var slc []Innovator
+	var pids pq.Int32Array
 	for rows.Next() {
 		var ob Innovator
 		err = rows.Scan(
-		// todo
+			&ob.ID,
+			&ob.Name,
+			&ob.Pids,
 		)
 		if err != nil {
 			return nil, err
 		}
 
+		pids = append(pids, ob.Pids...)
 		slc = append(slc, ob)
+	}
+
+	var rowsp pgx.Rows
+	rowsp, err = db.Query(
+		ctx,
+		`
+		select id, name
+			from projects
+			where id = any($1);	
+		`,
+		pids,
+	)
+	if err != nil {
+		return nil, err
+	}
+	defer rowsp.Close()
+
+	projects := make(map[int]Project)
+	for rowsp.Next() {
+		var p Project
+		err = rowsp.Scan(
+			&p.ID,
+			&p.Name,
+		)
+		if err != nil {
+			return nil, err
+		}
+
+		projects[p.ID] = p
+	}
+
+	for _, i := range slc {
+		var prjs []Project
+		for _, pid := range i.Pids {
+			prjs = append(prjs, projects[int(pid)])
+		}
+		i.Projects = prjs
 	}
 
 	return slc, nil

@@ -27,7 +27,7 @@ func (impl *Implementation) GetExpertise() gin.HandlerFunc {
 		var (
 			expertises []models.Expertise
 		)
-		// expertises, err = models.GetExpertises(c.Request.Context(), impl.DB)
+		// expertises, err = models.GetExpertises(c.Request.Context(), impl.DB, r.Pid)
 		expertises, err = models.GetExpertisesMock(c.Request.Context(), impl.DB, r.Pid) // TODO mock
 		if err != nil {
 			c.String(http.StatusInternalServerError, err.Error())

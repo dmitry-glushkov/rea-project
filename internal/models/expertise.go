@@ -30,7 +30,36 @@ func (exp Expertise) SaveMock(ctx context.Context, db *pgx.Conn) error {
 }
 
 func GetExpertises(ctx context.Context, db *pgx.Conn, pid int) ([]Expertise, error) {
-	return nil, nil
+	rows, err := db.Query(
+		ctx,
+		`
+		select id, pid, content
+			from expertises
+			where pid = $1;
+		`,
+		pid,
+	)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var slc []Expertise
+	for rows.Next() {
+		var ob Expertise
+		err = rows.Scan(
+			&ob.ID,
+			&ob.Pid,
+			&ob.Content,
+		)
+		if err != nil {
+			return nil, err
+		}
+
+		slc = append(slc, ob)
+	}
+
+	return slc, nil
 }
 
 func GetExpertisesMock(ctx context.Context, db *pgx.Conn, pid int) ([]Expertise, error) {

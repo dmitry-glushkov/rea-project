@@ -2,15 +2,16 @@ package models
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/jackc/pgx/v4"
+	"github.com/lib/pq"
 )
 
 type Investor struct {
-	ID        int       `json:"id"`
-	Name      string    `json:"name"`
-	Interests string    `json:"interests"`
+	ID        int    `json:"id"`
+	Name      string `json:"name"`
+	Interests string `json:"interests"`
+	Pids      pq.Int32Array
 	Projects  []Project `json:"projects"`
 	Total     int       `json:"total"`
 }
@@ -37,33 +38,75 @@ func GetInvestors(ctx context.Context, db *pgx.Conn, pid int) ([]Investor, error
 	rows, err := db.Query(
 		ctx,
 		`
-			SELECT u.id, u.name, d.val
+			SELECT u.id, u.name, sum(d.val) as sm
 				FROM users AS u
 				LEFT JOIN investments AS d
 					ON u.id = d.uid
-				WHERE d.pid = $1;
+				WHERE (d.pid = $1 OR $1 = 0);
 		`,
 		pid,
 	)
 	if err != nil {
-		err = fmt.Errorf("...: %w", err)
 		return nil, err
 	}
 	defer rows.Close()
 
-	var users []Investor
+	var invs []Investor
+	var pids pq.Int32Array
 	for rows.Next() {
-		var user Investor
-		err = rows.Scan()
+		var inv Investor
+		err = rows.Scan(
+			&inv.ID,
+			&inv.Name,
+			&inv.Total,
+			&inv.Pids,
+		)
 		if err != nil {
-			err = fmt.Errorf("...: %w", err)
 			return nil, err
 		}
 
-		users = append(users, user)
+		pids = append(pids, inv.Pids...)
+		invs = append(invs, inv)
 	}
 
-	return users, nil
+	var rowsp pgx.Rows
+	rowsp, err = db.Query(
+		ctx,
+		`
+		select id, name
+			from projects
+			where id = any($1);	
+		`,
+		pids,
+	)
+	if err != nil {
+		return nil, err
+	}
+	defer rowsp.Close()
+
+	projects := make(map[int]Project)
+	for rowsp.Next() {
+		var p Project
+		err = rowsp.Scan(
+			&p.ID,
+			&p.Name,
+		)
+		if err != nil {
+			return nil, err
+		}
+
+		projects[p.ID] = p
+	}
+
+	for _, i := range invs {
+		var prjs []Project
+		for _, pid := range i.Pids {
+			prjs = append(prjs, projects[int(pid)])
+		}
+		i.Projects = prjs
+	}
+
+	return invs, nil
 }
 
 func GetInvestorsMock(ctx context.Context, db *pgx.Conn, pid int) ([]Investor, error) {

@@ -50,7 +50,6 @@ func GetProjects(ctx context.Context, db *pgx.Conn, page, limit int) ([]Project,
 		`,
 	)
 	if err != nil {
-		err = fmt.Errorf("...: %w", err)
 		return nil, err
 	}
 	defer rows.Close()
@@ -60,7 +59,6 @@ func GetProjects(ctx context.Context, db *pgx.Conn, page, limit int) ([]Project,
 		var project Project
 		err = rows.Scan()
 		if err != nil {
-			err = fmt.Errorf("...: %w", err)
 			return nil, err
 		}
 
@@ -74,7 +72,7 @@ func GetProject(ctx context.Context, db *pgx.Conn, pid int) (Project, error) {
 	row := db.QueryRow(
 		ctx,
 		`
-		SELECT id, name, desc, owner_id
+		SELECT id, name, desc, owner
 			FROM projects
 			WHERE id = $1;	
 		`,
@@ -82,9 +80,13 @@ func GetProject(ctx context.Context, db *pgx.Conn, pid int) (Project, error) {
 	)
 
 	var project Project
-	err := row.Scan()
+	err := row.Scan(
+		&project.ID,
+		&project.Name,
+		&project.Desc,
+		&project.Owner,
+	)
 	if err != nil {
-		err = fmt.Errorf("...: %w", err)
 		return Project{}, err
 	}
 

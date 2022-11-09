@@ -79,7 +79,6 @@ func GetUserInvestments(ctx context.Context, db *pgx.Conn, uid int) ([]Investmen
 		uid,
 	)
 	if err != nil {
-		err = fmt.Errorf("...: %w", err)
 		return nil, err
 	}
 	defer rows.Close()
@@ -87,9 +86,12 @@ func GetUserInvestments(ctx context.Context, db *pgx.Conn, uid int) ([]Investmen
 	var investments []Investment
 	for rows.Next() {
 		var investment Investment
-		err = rows.Scan()
+		err = rows.Scan(
+			&investment.UID,
+			&investment.PID,
+			&investment.Val,
+		)
 		if err != nil {
-			err = fmt.Errorf("...: %w", err)
 			return nil, err
 		}
 
