@@ -7,14 +7,35 @@
             <button onclick="location.href='/contractors'">Исполнители</button>
         </div>
     </head>
-<!-- добавить форму с созданием инноватора -->
+
+    <div>
+        <h1 style="text-align: center;"> Инноваторы </h1> 
+    </div>
+
+    <div id="createInnovator">
+            <h3 style="text-align: center;">
+                    Зарегистрировать инноватора
+            </h3>
+            <form method="post">
+
+                <label for="InnovatorNameInput">Имя инноватора</label>
+                <input id="InnovatorNameInput" type="text"/>
+
+                <label for="InnovatorInterestsInput">Род деятельности</label>
+                <input id="InnovatorInterestsInput" type="text"/>
+
+                <input type="button" value="Зарегистрировать" id="SubmitBtn">
+            </form>
+    </div>
+
     <body>
-        <div style="padding: 2em 0;">
-            <h2 style="text-align: center;"> Список инноваторов </h2>
+        <div id="innovatorsList">
             <table id="innovatorsTable">
                 <thead>
                     <tr>
-                        <th>Имя инноватора</th><th>Сферы интереса</th><th>Список проектов</th>
+                        <th>Имя инноватора</th>
+                        <th>Сферы интереса</th>
+                        <th>Список проектов</th>
                     </tr>
                 </thead>
                 <tbody id="innovatorsTableBody"></tbody>
@@ -46,6 +67,18 @@
 
             
             
+        </script>
+
+        <script type="application/javascript">
+            $('#SubmitBtn').on('click', function(){
+                let innovator_input = {
+                    "name": $("InnovatorNameInput").val(),
+                    "interests": $("#InnovatorInterestsInput").val(),
+                };
+                $.post("/api/create_innovator", JSON.stringify(innovator_input), function(data){
+                    console.log(data);
+                });
+            })     
         </script>
 
         <style>

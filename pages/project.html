@@ -27,34 +27,12 @@
             <hr>
             <div id="projectOwner"></div>
             <br>
-<<<<<<< HEAD
-            <div id="buttonInvestment">
-                <!-- кнопка перехода к инвестициям -->
-            </div> 
-            <!-- 
-                добавить кнопки перехода к исполнителям, инвесторам (в последнюю очередь) и документам, рискам и экспертизе
-             -->
-
-=======
-            <div id="buttons" class="btns-nav">
-                <!-- заполняется jquery -->
-                <!-- туту будет переход к исполнителям /contracts -->
-                <!-- тут будет переход к рискам /risks?pid=x -->
-                <!-- тут будет переход к документам /docs?pid=x -->
-            </div>
-            <div>
-                <!-- заполняется jquery -->
-                
-            </div>
-            <div>
-                <!-- заполняется jquery -->
-                
-            </div>
-            <div>
-                <!-- заполняется jquery -->
-               
-            </div>
->>>>>>> d3eee0554bb9f966fcbc4617e94f2c3a3cb1083b
+            <div id="buttonInvestment"></div> 
+            <div id="buttonContractors"></div> 
+            <div id="buttonInvestors"></div>
+            <div id="buttonDocuments"></div> 
+            <div id="buttonRisks"></div>
+            <div id="buttonExpertise"></div>
         </div>
 
         <script type="application/javascript">
@@ -77,11 +55,17 @@
                         +'</span>';
                     $('#projectTarget').append(target);
                     btnInv = `<button onclick="location.href='/investments?pid=`+project.id+`'" type="button"> Перейти к инвестициям </button>`;
-                    $('#buttons').append(btnInv); 
-                    btnCntr = `<button onclick="location.href='/contracts?pid=`+project.id+`'" type="button"> Перейти к документам проекта </button>`;
-                    $('#buttons').append(btnCntr);
+                    $('#buttonInvestment').append(btnInv); 
+                    btnCon = `<button onclick="location.href='/contractors?pid=`+project.id+`'" type="button"> Перейти к исполнителям </button>`;
+                    $('#buttonContractors').append(btnCon); 
+                    btnInv = `<button onclick="location.href='/investors?pid=`+project.id+`'" type="button"> Перейти к инвесторам </button>`;
+                    $('#buttonInvestors').append(btnInv); 
+                    btnCts = `<button onclick="location.href='/contracts?pid=`+project.id+`'" type="button"> Перейти к документам проекта </button>`;
+                    $('#buttonDocuments').append(btnCts);
                     btnRisks = `<button onclick="location.href='/risks?pid=`+project.id+`'" type="button"> Перейти к рискам проекта </button>`;
-                    $('#buttons').append(btnRisks);
+                    $('#buttonRisks').append(btnRisks);
+                    btnExp = `<button onclick="location.href='/expertise?pid=`+project.id+`'" type="button"> Перейти к экспертизе </button>`;
+                    $('#buttonExpertise').append(btnExp);
                 }
                     
                 if (data.hasOwnProperty('project_stages')) {

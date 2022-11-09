@@ -8,6 +8,16 @@
         </div>
     </head>
 
+    
+    <div style="padding: 2em 0;">
+        <h2 style="text-align: center;"> 
+            <div id="ContractsHeader">Документы по проекту<br></div>
+        </h2>
+        
+    </div>
+        <!-- добавить название проекта в заголовок -->
+   
+
     <body>
 
         <div>
@@ -19,6 +29,9 @@
         $.get("/api/contracts?pid="+pid, function(data) {
             // TODO заполнить список контрактов с исполнителями (имя исполнителя, задание, документ, дата)
         })
+        const urlParams = new URLSearchParams(window.location.search)
+        const pid = urlParams.get("pid")
+        
     </script>
         
     <style>

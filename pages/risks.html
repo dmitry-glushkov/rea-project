@@ -8,11 +8,28 @@
         </div>
     </head>
 
+    <div style="padding: 2em 0;">
+        <h2 style="text-align: center;"> 
+            <div id="RisksHeader">Риски проекта<br></div>
+        </h2>
+        
+    </div>
+
     <body>
         <!-- todo список оценок рисков проекта (риск(текст), план действий (текст), оценка (int деньги)) -->
     </body>
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"ы>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js">
+        $.get("/api/risks?pid="+pid, function(data) {
+            // TODO заполнить список контрактов с исполнителями (имя исполнителя, задание, документ, дата)
+            if (data.hasOwnProperty('project_info')) { //добавление названия проекта в заголовок
+                    let project = data['project_info']
+                    head = '<span>'+
+                        project.name
+                        +'</span>';
+                    $('#risksHeader').append(head);
+                }
+        })
         
     </script>
 
