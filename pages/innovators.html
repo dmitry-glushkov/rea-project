@@ -11,7 +11,7 @@
 
     <div style="padding: 2em 0;">
         <h2 style="text-align: center;"> 
-            <div id="innovatorsHeader">Инноваторы<br></div>
+            <div id="innovatorsHeader">Инноваторы</div>
         </h2>            
     </div>
 
@@ -24,9 +24,6 @@
                 <label for="InnovatorNameInput">Имя инноватора</label>
                 <input id="InnovatorNameInput" type="text"/>
 
-                <label for="InnovatorInterestsInput">Род деятельности</label>
-                <input id="InnovatorInterestsInput" type="text"/>
-
                 <input type="button" value="Зарегистрировать" id="SubmitBtn">
             </form>
     </div>
@@ -37,7 +34,6 @@
                 <thead>
                     <tr>
                         <th>Имя инноватора</th>
-                        <th>Сферы интереса</th>
                         <th>Список проектов</th>
                     </tr>
                 </thead>
@@ -46,7 +42,7 @@
         </div>
 
         <script>
-            $.get("/api/innovators", function(data) { //у каждого объекта "инноватор" должны быть как минимум сфера интересов, имя и массив проектов с id и названием
+            $.get("/api/innovators", function(data) {
                 if (data.hasOwnProperty('innovators')) {
                     console.log(data);
                     let innovators = data['innovators']
@@ -57,18 +53,12 @@
                             innProjects.forEach(function (project) {
                                 li.push('<li id="projectID_'+project.id+'">' 
                                     + '<a href="/project?pid='+project.id+'"">'+project.name+'</a>'+'</li>'); 
-                                if (project.id == pid){
-                                    projname = project.name;
-                                };
                             })
                             tr = '<tr id="investorId_'+innovator.id+'">' +
                                 '<td>'+innovator.name+'</td>' +
-                                '<td>'+innovator.interests+'</td>' +
                                 '<td>'+'<ul>'+li.join(" ")+'</ul>'+'</td>'+'</tr>';                              
                             $('#innovatorsTableBody').append(tr);                
                     }
-                    head = '<span>'+'"'+projname+'"'+'</span>';
-                     $('#innovatorsHeader').append(head);
                 }
             })
 
@@ -80,7 +70,6 @@
             $('#SubmitBtn').on('click', function(){
                 let innovator_input = {
                     "name": $("InnovatorNameInput").val(),
-                    "interests": $("#InnovatorInterestsInput").val(),
                 };
                 $.post("/api/create_innovator", JSON.stringify(innovator_input), function(data){
                     console.log(data);
