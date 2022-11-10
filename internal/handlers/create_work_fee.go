@@ -19,7 +19,7 @@ type CreateWorkFeeResponse struct{}
 func (impl *Implementation) CreateWorkFee() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		r := &CreateWorkFeeRequest{}
-		err := c.Bind(r)
+		err := c.BindJSON(r)
 		if err != nil {
 			c.String(http.StatusBadRequest, err.Error())
 			return
@@ -31,8 +31,8 @@ func (impl *Implementation) CreateWorkFee() gin.HandlerFunc {
 			Sum: r.Sum,
 			Dcm: models.Doc{ID: r.DocumentId},
 		}
-		// err = wf.Save(c.Request.Context(), impl.DB)
-		err = wf.SaveMock(c.Request.Context(), impl.DB) // todo mock
+		err = wf.Save(c.Request.Context(), impl.DB)
+		// err = wf.SaveMock(c.Request.Context(), impl.DB) // todo mock
 		if err != nil {
 			c.String(http.StatusInternalServerError, err.Error())
 			return

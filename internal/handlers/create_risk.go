@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"fmt"
 	"net/http"
 	"ucheba/back/internal/models"
 
@@ -19,7 +20,7 @@ type CreateRiskResponse struct{}
 func (impl *Implementation) CreateRisk() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		r := &CreateRiskRequest{}
-		err := c.Bind(r)
+		err := c.BindJSON(r)
 		if err != nil {
 			c.String(http.StatusBadRequest, err.Error())
 			return
@@ -31,8 +32,9 @@ func (impl *Implementation) CreateRisk() gin.HandlerFunc {
 			Plan: r.Plan,
 			Sum:  r.Sum,
 		}
-		// err = risk.Save(c.Request.Context(), impl.DB)
-		err = risk.SaveMock(c.Request.Context(), impl.DB) // todo mock
+		fmt.Println(risk)
+		err = risk.Save(c.Request.Context(), impl.DB)
+		// err = risk.SaveMock(c.Request.Context(), impl.DB) // todo mock
 		if err != nil {
 			c.String(http.StatusInternalServerError, err.Error())
 			return

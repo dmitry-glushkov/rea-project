@@ -25,8 +25,8 @@ func (impl *Implementation) GetInnovators() gin.HandlerFunc {
 		var (
 			innovators []models.Innovator
 		)
-		// innovators, err = models.GetInnovators(c.Request.Context(), impl.DB)
-		innovators, err = models.GetInnovatorsMock(c.Request.Context(), impl.DB) // TODO mock
+		innovators, err = models.GetInnovators(c.Request.Context(), impl.DB)
+		// innovators, err = models.GetInnovatorsMock(c.Request.Context(), impl.DB) // TODO mock
 		if err != nil {
 			c.String(http.StatusInternalServerError, err.Error())
 			return

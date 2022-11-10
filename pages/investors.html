@@ -44,8 +44,8 @@
                     <tr>
                         <th>Инвестор</th>
                         <th>Сфера интересов</th>
-                        <th>Список проинвестированных проектов</th>
                         <th>Общая сумма инвестиций</th>
+                        <th>Список проинвестированных проектов</th>
                     </tr>
                 </thead>
                 <tbody id="investorsTableBody"></tbody>
@@ -63,18 +63,21 @@
                         let investors = data['investors']
                         for (i = 0; i < investors.length; i++) {
                             investor = investors[i];
-                            invProjects = investor.projects
-                            var li = []
-                            invProjects.forEach(function (project) {
-                                li.push('<li id="projectID_'+project.id+'">' 
-                                    + '<a href="/project?pid='+project.id+'"">'+project.name+'</a>'+'</li>'); 
-                            }) 
                             tr = '<tr id="investorId_'+investor.id+'">' +
                                 '<td>'+investor.name+'</td>' +
                                 '<td>'+investor.interests+'</td>' +
-                                '<td>'+'<ul>'+li.join(" ")+'</ul>'+'</td>' +          
-                                '<td>'+investor.total+'</td>' + // пусть это просто общая сумма всех инвестиций конкретного инвестора
-                                '</tr>';                              
+                                '<td>'+investor.total+'</td>';
+
+                            invProjects = investor.projects
+                            if (invProjects != null) {
+                                var li = []
+                                invProjects.forEach(function (project) {
+                                li.push('<li id="projectID_'+project.id+'">' 
+                                    + '<a href="/project?pid='+project.id+'"">'+project.name+'</a>'+'</li>'); 
+                                tr += '<td>'+'<ul>'+li.join(" ")+'</ul>'+'</td>'
+                            })
+                            }  
+                            tr += + '</tr>';                             
                             $('#investorsTableBody').append(tr);
                         }
                     }
@@ -87,22 +90,24 @@
                         let investors = data['investors']
                         for (i = 0; i < investors.length; i++) {
                             investor = investors[i];
+                            tr = '<tr id="investorId_'+investor.id+'">' +
+                                '<td>'+investor.name+'</td>' +
+                                '<td>'+investor.interests+'</td>' +
+                                '<td>'+investor.total+'</td>';
+
                             invProjects = investor.projects
-                            var li = []
-                            invProjects.forEach(function (project) {
+                            if (invProjects != null) {
+                                var li = []
+                                invProjects.forEach(function (project) {
                                 li.push('<li id="projectID_'+project.id+'">' 
                                     + '<a href="/project?pid='+project.id+'"">'+project.name+'</a>'+'</li>'); 
                                 if (project.id == pid){
                                     projname = project.name;
                                 };
+                                tr += '<td>'+'<ul>'+li.join(" ")+'</ul>'+'</td>'
                             })
-                             
-                            tr = '<tr id="investorId_'+investor.id+'">' +
-                                '<td>'+investor.name+'</td>' +
-                                '<td>'+investor.interests+'</td>' +
-                                '<td>'+'<ul>'+li.join(" ")+'</ul>'+'</td>' +          
-                                '<td>'+investor.total+'</td>' + 
-                                '</tr>';                              
+                            }  
+                            tr += + '</tr>';                             
                             $('#investorsTableBody').append(tr);
                         };
                         head = '<span>'+'"'+projname+'"'+'</span>';

@@ -28,8 +28,8 @@ func (impl *Implementation) GetProjects() gin.HandlerFunc {
 		var (
 			projects []models.Project
 		)
-		// projects, err = models.GetProjects(c.Request.Context(), impl.DB, r.Page, r.Limit)
-		projects, err = models.GetProjectsMock(c.Request.Context(), impl.DB, r.Page, r.Limit) // TODO mock
+		projects, err = models.GetProjects(c.Request.Context(), impl.DB, r.Page, r.Limit)
+		// projects, err = models.GetProjectsMock(c.Request.Context(), impl.DB, r.Page, r.Limit) // TODO mock
 		if err != nil {
 			c.String(http.StatusInternalServerError, err.Error())
 			return

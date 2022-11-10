@@ -8,9 +8,10 @@ import (
 )
 
 type CreateProjectRequest struct {
-	Name  string `json:"name"`
-	Desc  string `json:"desc"`
-	Owner string `json:"owner"`
+	Name   string `json:"name"`
+	Desc   string `json:"desc"`
+	Owner  string `json:"owner"`
+	Target int    `json:"target"`
 }
 
 type CreateProjectResponse struct{}
@@ -26,12 +27,13 @@ func (impl *Implementation) CreateProject() gin.HandlerFunc {
 		}
 
 		project := models.Project{
-			Name:  r.Name,
-			Desc:  r.Desc,
-			Owner: r.Owner,
+			Name:   r.Name,
+			Desc:   r.Desc,
+			Owner:  r.Owner,
+			Target: r.Target,
 		}
-		// err = project.Save(c.Request.Context(), impl.DB)
-		err = project.SaveMock(c.Request.Context(), impl.DB) // todo mock
+		err = project.Save(c.Request.Context(), impl.DB)
+		// err = project.SaveMock(c.Request.Context(), impl.DB) // todo mock
 		if err != nil {
 			c.String(http.StatusInternalServerError, err.Error())
 			return

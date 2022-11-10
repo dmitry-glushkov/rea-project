@@ -27,8 +27,8 @@ func (impl *Implementation) GetDocs() gin.HandlerFunc {
 		var (
 			docs []models.Doc
 		)
-		// docs, err = models.GetDocs(c.Request.Context(), impl.DB, r.Pid)
-		docs, err = models.GetDocsMock(c.Request.Context(), impl.DB, r.Pid) // TODO mock
+		docs, err = models.GetDocs(c.Request.Context(), impl.DB, r.Pid)
+		// docs, err = models.GetDocsMock(c.Request.Context(), impl.DB, r.Pid) // TODO mock
 		if err != nil {
 			c.String(http.StatusInternalServerError, err.Error())
 			return

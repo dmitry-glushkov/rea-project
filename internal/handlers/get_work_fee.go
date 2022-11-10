@@ -28,8 +28,8 @@ func (impl *Implementation) GetWorkFee() gin.HandlerFunc {
 		var (
 			wfs []models.WorkFee
 		)
-		// wfs, err = models.GetWFs(c.Request.Context(), impl.DB, r.Pid, r.Cid)
-		wfs, err = models.GetWFsMock(c.Request.Context(), impl.DB, r.Pid, r.Cid) // TODO mock
+		wfs, err = models.GetWFs(c.Request.Context(), impl.DB, r.Pid, r.Cid)
+		// wfs, err = models.GetWFsMock(c.Request.Context(), impl.DB, r.Pid, r.Cid) // TODO mock
 		if err != nil {
 			c.String(http.StatusInternalServerError, err.Error())
 			return

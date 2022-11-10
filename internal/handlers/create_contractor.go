@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"fmt"
 	"net/http"
 	"ucheba/back/internal/models"
 
@@ -9,7 +10,7 @@ import (
 
 type CreateContractorRequest struct {
 	Name     string `json:"name"`
-	Interest string `json:"interest"`
+	Interest string `json:"interests"`
 }
 
 type CreateContractorResponse struct{}
@@ -17,7 +18,7 @@ type CreateContractorResponse struct{}
 func (impl *Implementation) CreateContractor() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		r := &CreateContractorRequest{}
-		err := c.Bind(r)
+		err := c.BindJSON(r)
 		if err != nil {
 			c.String(http.StatusBadRequest, err.Error())
 			return
@@ -27,8 +28,9 @@ func (impl *Implementation) CreateContractor() gin.HandlerFunc {
 			Name:     r.Name,
 			Interest: r.Interest,
 		}
-		// err = contr.Save(c.Request.Context(), impl.DB)
-		err = contr.SaveMock(c.Request.Context(), impl.DB) // todo mock
+		fmt.Println(contr)
+		err = contr.Save(c.Request.Context(), impl.DB)
+		// err = contr.SaveMock(c.Request.Context(), impl.DB) // todo mock
 		if err != nil {
 			c.String(http.StatusInternalServerError, err.Error())
 			return

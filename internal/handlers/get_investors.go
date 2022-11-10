@@ -26,8 +26,8 @@ func (impl *Implementation) GetInvestors() gin.HandlerFunc {
 		}
 
 		var investors []models.Investor
-		// investors, err = models.GetInvestors(c.Request.Context(), impl.DB, r.PID)
-		investors, err = models.GetInvestorsMock(c.Request.Context(), impl.DB, r.PID) // todo mock
+		investors, err = models.GetInvestors(c.Request.Context(), impl.DB, r.PID)
+		// investors, err = models.GetInvestorsMock(c.Request.Context(), impl.DB, r.PID) // todo mock
 		if err != nil {
 			c.String(http.StatusInternalServerError, err.Error())
 			return

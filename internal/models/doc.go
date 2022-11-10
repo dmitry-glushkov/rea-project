@@ -7,12 +7,11 @@ import (
 )
 
 type Doc struct {
-	ID     int    `json:"id"`
-	Pid    int    `json:"pid"`
-	Title  string `json:"title"`
-	Author string `json:"author"`
-	Dcm    string `json:"dcm"`
-	Cid    int    `json:"cid"`
+	ID    int    `json:"id"`
+	Pid   int    `json:"pid"`
+	Title string `json:"title"`
+	Dcm   string `json:"dcm"`
+	Cid   string `json:"cid"`
 }
 
 func (d Doc) Save(ctx context.Context, db *pgx.Conn) error {
@@ -20,10 +19,10 @@ func (d Doc) Save(ctx context.Context, db *pgx.Conn) error {
 		ctx,
 		`
 		insert into docs
-			(title, author, document, pid, cid)
-			values ($1, $2, $3, $4, $5);	
+			(title, document, pid, cid)
+			values ($1, $2, $3, (select id from contractors where name = $4));	
 		`,
-		d.Title, d.Author, d.Dcm, d.Pid, d.Cid,
+		d.Title, d.Dcm, d.Pid, d.Cid,
 	)
 	if err != nil {
 		return err
@@ -32,9 +31,9 @@ func (d Doc) Save(ctx context.Context, db *pgx.Conn) error {
 	_, err = db.Exec(
 		ctx,
 		`
-		update contracotrs
+		update contractors
 			set pids = array_append(contractors.pids, $1)
-			where id = $2;
+			where name = $2;
 		`,
 		d.Pid, d.Cid,
 	)
@@ -49,8 +48,8 @@ func GetDocs(ctx context.Context, db *pgx.Conn, pid int) ([]Doc, error) {
 	rows, err := db.Query(
 		ctx,
 		`
-			select id, pid, title, author, document, cid
-				from docs
+			select d.id, d.pid, d.title, d.document, (select name from contractors as c where c.id = d.cid)
+				from docs as d
 				where (pid = $1 or $1 = 0);
 		`,
 		pid,
@@ -67,7 +66,6 @@ func GetDocs(ctx context.Context, db *pgx.Conn, pid int) ([]Doc, error) {
 			&ob.ID,
 			&ob.Pid,
 			&ob.Title,
-			&ob.Author,
 			&ob.Dcm,
 			&ob.Cid,
 		)
@@ -84,28 +82,25 @@ func GetDocs(ctx context.Context, db *pgx.Conn, pid int) ([]Doc, error) {
 func GetDocsMock(ctx context.Context, db *pgx.Conn, pid int) ([]Doc, error) {
 	return []Doc{
 		{
-			ID:     0,
-			Pid:    pid,
-			Title:  "title 0",
-			Author: "author",
-			Dcm:    "текст документа",
-			Cid:    1,
+			ID:    0,
+			Pid:   pid,
+			Title: "title 0",
+			Dcm:   "текст документа",
+			Cid:   "isp1",
 		},
 		{
-			ID:     1,
-			Pid:    pid,
-			Title:  "title 1",
-			Author: "author",
-			Dcm:    "текст документа",
-			Cid:    1,
+			ID:    1,
+			Pid:   pid,
+			Title: "title 1",
+			Dcm:   "текст документа",
+			Cid:   "isp2",
 		},
 		{
-			ID:     2,
-			Pid:    pid,
-			Title:  "title 2",
-			Author: "author",
-			Dcm:    "текст документа текст документа текст документа текст документа текст документа текст документа",
-			Cid:    4,
+			ID:    2,
+			Pid:   pid,
+			Title: "title 2",
+			Dcm:   "текст документа текст документа текст документа текст документа текст документа текст документа",
+			Cid:   "isp3",
 		},
 	}, nil
 }

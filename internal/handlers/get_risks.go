@@ -8,7 +8,7 @@ import (
 )
 
 type GetRisksRequest struct {
-	Pid int `json:"pid"`
+	Pid int `json:"pid" form:"pid"`
 }
 
 type GetRisksResponse struct {
@@ -27,8 +27,8 @@ func (impl *Implementation) GetRisks() gin.HandlerFunc {
 		var (
 			risks []models.Risk
 		)
-		// risks, err = models.GetRisks(c.Request.Context(), impl.DB, r.Pid)
-		risks, err = models.GetRisksMock(c.Request.Context(), impl.DB, r.Pid) // TODO mock
+		risks, err = models.GetRisks(c.Request.Context(), impl.DB, r.Pid)
+		// risks, err = models.GetRisksMock(c.Request.Context(), impl.DB, r.Pid) // TODO mock
 		if err != nil {
 			c.String(http.StatusInternalServerError, err.Error())
 			return

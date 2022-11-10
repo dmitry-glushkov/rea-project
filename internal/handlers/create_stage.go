@@ -2,7 +2,6 @@ package handlers
 
 import (
 	"net/http"
-	"time"
 	"ucheba/back/internal/models"
 
 	"github.com/gin-gonic/gin"
@@ -20,25 +19,19 @@ type CreateStageResponse struct{}
 func (impl *Implementation) CreateStage() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		r := &CreateStageRequest{}
-		err := c.Bind(r)
+		err := c.BindJSON(r)
 		if err != nil {
 			c.String(http.StatusBadRequest, err.Error())
-			return
-		}
-
-		dd, err := time.Parse("02.01.2006", r.DueDate)
-		if err != nil {
-			// TODO
 			return
 		}
 
 		goal := models.Stage{
 			PID:     r.PID,
 			Target:  r.Target,
-			DueDate: dd.Format("02.01.2006"),
+			DueDate: r.DueDate,
 		}
-		// err = goal.Save(c.Request.Context(), impl.DB)
-		err = goal.SaveMock(c.Request.Context(), impl.DB) // todo mock
+		err = goal.Save(c.Request.Context(), impl.DB)
+		// err = goal.SaveMock(c.Request.Context(), impl.DB) // todo mock
 		if err != nil {
 			c.String(http.StatusInternalServerError, err.Error())
 			return

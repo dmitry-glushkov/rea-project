@@ -9,6 +9,22 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     </head>
 
+    <div>
+        <h3 style="text-align: center;">Создать новый риск</h3>
+        <form method="post" style="text-align: center;">
+            <label for="RiskInput">угроза</label>
+            <input id="RiskInput" type="text"/>
+
+            <label for="RiskPlanInput">план</label>
+            <input id="RiskPlanInput" type="text"/>
+
+            <label for="RiskSumInput">издержки</label>
+            <input id="RiskSumInput" type="number"/>
+
+            <input type="button" value="Submit" id="SubmitBtn">
+        </form>
+    </div>
+
     <div style="padding: 2em 0;">
         <h2 style="text-align: center;"> 
             <div id="RisksHeader">Возможные Риски проекта<br></div>
@@ -30,18 +46,33 @@
             console.log(data)
             if (data.hasOwnProperty('risks')) {
                     let risks = data['risks']
-                    for (i = 0; i < risks.length; i++) {
-                        risk = risks[i];
-                        li = '<li>'
-                            +'<span>'+'Угроза: '+'</span>'
-                            +risk.risk+'<br>'
-                            +'<span>'+'Способ устранения: '+'</span>'
-                            +risk.plan+'<br>'
-                            +'<span>'+'Возможные издержки: '+'</span>'
-                            +risk.sum+'</li>'+'<hr>';
-                        $('#risksList').append(li);                 
+                    if (risks != null) {
+                        for (i = 0; i < risks.length; i++) {
+                            risk = risks[i];
+                            li = '<li>'
+                                +'<span>'+'Угроза: '+'</span>'
+                                +risk.risk+'<br>'
+                                +'<span>'+'Способ устранения: '+'</span>'
+                                +risk.plan+'<br>'
+                                +'<span>'+'Возможные издержки: '+'</span>'
+                                +risk.sum+'</li>'+'<hr>';
+                            $('#risksList').append(li);                 
+                        }
                     }
                 }
+        })
+
+        $('#SubmitBtn').on('click', function(){
+            let risk_input = {
+                "risk": $("#RiskInput").val(),
+                "plan": $("#RiskPlanInput").val(),
+                "sum": Number($("#RiskSumInput").val()),
+                "pid": Number(pid),
+            };
+            console.log(risk_input);
+            $.post("/api/create_risk", JSON.stringify(risk_input), function(data){
+                console.log(data);
+            });
         })
         
     </script>

@@ -2,7 +2,6 @@ package models
 
 import (
 	"context"
-	"fmt"
 	"time"
 
 	"github.com/jackc/pgx/v4"
@@ -41,12 +40,12 @@ func GetStages(ctx context.Context, db *pgx.Conn, pid int) ([]Stage, error) {
 		`
 		SELECT pid, target, due_date
 			FROM stages
-			WHERE pid = $1;
+			WHERE pid = $1
+			order by id desc;
 		`,
 		pid,
 	)
 	if err != nil {
-		err = fmt.Errorf("...: %w", err)
 		return nil, err
 	}
 	defer rows.Close()
@@ -54,9 +53,12 @@ func GetStages(ctx context.Context, db *pgx.Conn, pid int) ([]Stage, error) {
 	var stages []Stage
 	for rows.Next() {
 		var stage Stage
-		err = rows.Scan()
+		err = rows.Scan(
+			&stage.PID,
+			&stage.Target,
+			&stage.DueDate,
+		)
 		if err != nil {
-			err = fmt.Errorf("...: %w", err)
 			return nil, err
 		}
 

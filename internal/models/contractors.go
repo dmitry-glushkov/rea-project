@@ -10,7 +10,7 @@ import (
 type Contractor struct {
 	ID       int    `json:"id"`
 	Name     string `json:"name"`
-	Interest string `json:"interest"`
+	Interest string `json:"interests"`
 	Pids     pq.Int32Array
 	Projects []Project `json:"projects"`
 }
@@ -36,9 +36,9 @@ func GetContractors(ctx context.Context, db *pgx.Conn, pid int) ([]Contractor, e
 	rowsC, err := db.Query(
 		ctx,
 		`
-			select id, name, interests, pid
+			select id, name, interests, pids
 				from contractors
-				where ($1 = any(pid) or $1 = 0);
+				where ($1 = any(pids) or $1 = 0);
 		`,
 		pid,
 	)
@@ -47,7 +47,7 @@ func GetContractors(ctx context.Context, db *pgx.Conn, pid int) ([]Contractor, e
 	}
 	defer rowsC.Close()
 
-	var slc []Contractor
+	var slc []*Contractor
 	var pids pq.Int32Array
 	for rowsC.Next() {
 		var ob Contractor
@@ -63,7 +63,7 @@ func GetContractors(ctx context.Context, db *pgx.Conn, pid int) ([]Contractor, e
 
 		pids = append(pids, ob.Pids...)
 
-		slc = append(slc, ob)
+		slc = append(slc, &ob)
 	}
 
 	var rowsP pgx.Rows
@@ -103,7 +103,12 @@ func GetContractors(ctx context.Context, db *pgx.Conn, pid int) ([]Contractor, e
 		c.Projects = prjs
 	}
 
-	return slc, nil
+	var resp []Contractor
+	for _, s := range slc {
+		resp = append(resp, *s)
+	}
+
+	return resp, nil
 }
 
 func GetContractorsMock(ctx context.Context, db *pgx.Conn, pid int) ([]Contractor, error) {

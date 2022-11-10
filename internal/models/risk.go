@@ -34,9 +34,13 @@ func GetRisks(ctx context.Context, db *pgx.Conn, pid int) ([]Risk, error) {
 	rows, err := db.Query(
 		ctx,
 		`
-		
+		select pid, coalesce(risk, ''), coalesce(plan, ''), coalesce(sum, 0)
+			from risks 
+			where pid = $1;
 		`,
+		pid,
 	)
+
 	if err != nil {
 		return nil, err
 	}
@@ -46,7 +50,10 @@ func GetRisks(ctx context.Context, db *pgx.Conn, pid int) ([]Risk, error) {
 	for rows.Next() {
 		var ob Risk
 		err = rows.Scan(
-		// todo
+			&ob.PID,
+			&ob.Rsk,
+			&ob.Plan,
+			&ob.Sum,
 		)
 		if err != nil {
 			return nil, err

@@ -56,7 +56,7 @@
     <script>
         const urlParams = new URLSearchParams(window.location.search)
         const pid = urlParams.get("pid")
-        $.get("/api/investments", function(data) {
+        $.get("/api/investments?pid="+pid, function(data) {
                 console.log(data);
 
                 if (data.hasOwnProperty('project_info')) {
@@ -91,8 +91,8 @@
          $('#SubmitBtn').on('click', function(){
             let investment_input = {
                 "uid": $("#ProjectInvestorInput").val(),
-                "pid": pid,
-                "val": $("#ProjectSumInput").val(),
+                "pid": Number(pid),
+                "val": Number($("#ProjectSumInput").val()),
             };
             $.post("/api/create_investment", JSON.stringify(investment_input), function(data){
                 console.log(data);

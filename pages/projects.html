@@ -22,6 +22,9 @@
             <label for="ProjectDescInput">Описание проекта</label>
             <input id="ProjectDescInput" type="text"/>
 
+            <label for="ProjectTargetInput">Необходимая сумма</label>
+            <input id="ProjectTargetInput" type="number"/>
+
             <input type="button" value="Submit" id="SubmitBtn">
         </form>
     </div>
@@ -64,7 +67,9 @@
                 "name": $("#ProjectNameInput").val(),
                 "desc": $("#ProjectDescInput").val(),
                 "owner": $("#ProjectOwnerInput").val(),
+                "target": Number($("#ProjectTargetInput").val()),
             };
+            console.log(project_input);
             $.post("/api/create_project", JSON.stringify(project_input), function(data){
                 console.log(data);
             });

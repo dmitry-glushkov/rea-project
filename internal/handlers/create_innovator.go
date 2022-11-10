@@ -16,7 +16,7 @@ type CreateInnovatorResponse struct{}
 func (impl *Implementation) CreateInnovator() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		r := &CreateInnovatorRequest{}
-		err := c.Bind(r)
+		err := c.BindJSON(r)
 		if err != nil {
 			c.String(http.StatusBadRequest, err.Error())
 			return
@@ -25,8 +25,8 @@ func (impl *Implementation) CreateInnovator() gin.HandlerFunc {
 		in := models.Innovator{
 			Name: r.Name,
 		}
-		// err = in.SaveMock(c.Request.Context(), impl.DB)
-		err = in.SaveMock(c.Request.Context(), impl.DB) // todo mock
+		err = in.Save(c.Request.Context(), impl.DB)
+		// err = in.SaveMock(c.Request.Context(), impl.DB) // todo mock
 		if err != nil {
 			c.String(http.StatusInternalServerError, err.Error())
 			return

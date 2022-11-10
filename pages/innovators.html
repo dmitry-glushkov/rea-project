@@ -48,17 +48,18 @@
                     let innovators = data['innovators']
                     for (i = 0; i < innovators.length; i++) {
                         innovator = innovators[i];
-                        innProjects = innovator.projects
+                        tr = '<tr id="investorId_'+innovator.id+'">'+'<td>'+innovator.name+'</td>';
+   
+                        innProjects = innovator.projects                        
                         var li = []
                         if (innProjects != null) {
                             innProjects.forEach(function (project) {
-                            li.push('<li id="projectID_'+project.id+'">' 
-                                + '<a href="/project?pid='+project.id+'"">'+project.name+'</a>'+'</li>'); 
+                                li.push('<li id="projectID_'+project.id+'">' 
+                                    + '<a href="/project?pid='+project.id+'"">'+project.name+'</a>'+'</li>'); 
                             })
+                            tr += '<td>'+'<ul>'+li.join(" ")+'</ul>'+'</td>'+'</tr>';
                         }
-                        tr = '<tr id="investorId_'+innovator.id+'">' +
-                            '<td>'+innovator.name+'</td>' +
-                            '<td>'+'<ul>'+li.join(" ")+'</ul>'+'</td>'+'</tr>';                              
+                                                          
                         $('#innovatorsTableBody').append(tr);                
                     }
                 }
@@ -71,7 +72,7 @@
         <script type="application/javascript">
             $('#SubmitBtn').on('click', function(){
                 let innovator_input = {
-                    "name": $("InnovatorNameInput").val(),
+                    "name": $("#InnovatorNameInput").val(),
                 };
                 $.post("/api/create_innovator", JSON.stringify(innovator_input), function(data){
                     console.log(data);

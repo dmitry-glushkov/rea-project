@@ -44,7 +44,7 @@ func GetInnovators(ctx context.Context, db *pgx.Conn) ([]Innovator, error) {
 	}
 	defer rows.Close()
 
-	var slc []Innovator
+	var slc []*Innovator
 	var pids pq.Int32Array
 	for rows.Next() {
 		var ob Innovator
@@ -58,7 +58,7 @@ func GetInnovators(ctx context.Context, db *pgx.Conn) ([]Innovator, error) {
 		}
 
 		pids = append(pids, ob.Pids...)
-		slc = append(slc, ob)
+		slc = append(slc, &ob)
 	}
 
 	var rowsp pgx.Rows
@@ -98,7 +98,12 @@ func GetInnovators(ctx context.Context, db *pgx.Conn) ([]Innovator, error) {
 		i.Projects = prjs
 	}
 
-	return slc, nil
+	var resp []Innovator
+	for _, s := range slc {
+		resp = append(resp, *s)
+	}
+
+	return resp, nil
 }
 
 func GetInnovatorsMock(ctx context.Context, db *pgx.Conn) ([]Innovator, error) {

@@ -23,6 +23,20 @@
                 Собрано/Цель
                 <br>
             </div>
+            <hr>
+            <div>
+                <h3 style="text-align: center;">Создать новую веху</h3>
+                <form method="post" style="text-align: center;">
+                    <label for="StageTargetInput">цель</label>
+                    <input id="StageTargetInput" type="number"/>
+        
+                    <label for="StageDateInput">дата</label>
+                    <input id="StageDateInput" type="text"/>
+        
+                    <input type="button" value="Submit" id="SubmitBtn">
+                </form>
+            </div>
+            <hr>
             <ul id="projectStages"></ul>
             <hr>
             <div id="projectOwner"></div>
@@ -91,7 +105,20 @@
                 }
 
                 
-        });      
+        });  
+        
+        $('#SubmitBtn').on('click', function(){
+            let stage_input = {
+                "target": Number($("#StageTargetInput").val()),
+                "due_date": $("#StageDateInput").val(),
+                "pid": Number(pid),
+            };
+            console.log(stage_input);
+            $.post("/api/create_stage", JSON.stringify(stage_input), function(data){
+                console.log(data);
+            });
+        })
+
         </script>
 
         <style>

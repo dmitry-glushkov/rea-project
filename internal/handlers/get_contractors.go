@@ -8,7 +8,7 @@ import (
 )
 
 type GetContractorsRequest struct {
-	Pid int `json:"pid"`
+	Pid int `json:"pid" form:"pid"`
 }
 
 type GetContractorsResponse struct {
@@ -18,7 +18,7 @@ type GetContractorsResponse struct {
 func (impl *Implementation) GetContractors() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		r := &GetContractorsRequest{}
-		err := c.Bind(r)
+		err := c.BindQuery(r)
 		if err != nil {
 			c.String(http.StatusBadRequest, err.Error())
 			return
@@ -27,8 +27,8 @@ func (impl *Implementation) GetContractors() gin.HandlerFunc {
 		var (
 			contractors []models.Contractor
 		)
-		// contractors, err = models.GetContractors(c.Request.Context(), impl.DB, r.Pid)
-		contractors, err = models.GetContractorsMock(c.Request.Context(), impl.DB, r.Pid) // TODO mock
+		contractors, err = models.GetContractors(c.Request.Context(), impl.DB, r.Pid)
+		// contractors, err = models.GetContractorsMock(c.Request.Context(), impl.DB, r.Pid) // TODO mock
 		if err != nil {
 			c.String(http.StatusInternalServerError, err.Error())
 			return

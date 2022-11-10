@@ -15,6 +15,16 @@
         </h2>     
     </div>
 
+    <div>
+        <h3 style="text-align: center;">Создать новую экспертизу</h3>
+        <form method="post" style="text-align: center;">
+            <label for="ExpInput">экспертиза</label>
+            <input id="ExpInput" type="text"/>
+
+            <input type="button" value="Submit" id="SubmitBtn">
+        </form>
+    </div>
+
     <body>
         <div>
             <ul id="expertiseList"></ul>
@@ -28,12 +38,26 @@
             // TODO заполнить список контрактов с исполнителями (имя исполнителя, задание, документ, дата)
             if (data.hasOwnProperty('expertises')) { //добавление названия проекта в заголовок
                     let expretises = data['expertises']
-                    for (i = 0; i < expretises.length; i++) {
-                        expertise = expretises[i];
-                        li = '<li>'+expertise.content+'</li>';
-                        $('#expertiseList').append(li);                       
+                    if (expretises != null) {
+                        for (i = 0; i < expretises.length; i++) {
+                            expertise = expretises[i];
+                            li = '<li>'+expertise.content+'</li>';
+                            $('#expertiseList').append(li);                       
+                        }
                     }
+                    
                 }
+        })
+
+        $('#SubmitBtn').on('click', function(){
+            let exp_input = {
+                "pid": Number(pid),
+                "content": $("#ExpInput").val(),
+            };
+            console.log(exp_input);
+            $.post("/api/create_expertise", JSON.stringify(exp_input), function(data){
+                console.log(data);
+            });
         })
         
     </script>

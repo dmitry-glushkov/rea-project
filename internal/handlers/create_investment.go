@@ -8,9 +8,9 @@ import (
 )
 
 type CreateInvestmentRequest struct {
-	Uid int `json:"uid"`
-	Pid int `json:"pid"`
-	Val int `json:"val"`
+	Uid string `json:"uid"`
+	Pid int    `json:"pid"`
+	Val int    `json:"val"`
 }
 
 type CreateInvestmentResponse struct{}
@@ -18,19 +18,19 @@ type CreateInvestmentResponse struct{}
 func (impl *Implementation) CreateInvestment() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		r := &CreateInvestmentRequest{}
-		err := c.Bind(r)
+		err := c.BindJSON(r)
 		if err != nil {
 			c.String(http.StatusBadRequest, err.Error())
 			return
 		}
 
 		investment := models.Investment{
-			UID: r.Uid,
-			PID: r.Pid,
-			Val: r.Val,
+			UIDname: r.Uid,
+			PID:     r.Pid,
+			Val:     r.Val,
 		}
-		// err = investment.Save(c.Request.Context(), impl.DB)
-		err = investment.SaveMock(c.Request.Context(), impl.DB) // todo mock
+		err = investment.Save(c.Request.Context(), impl.DB)
+		// err = investment.SaveMock(c.Request.Context(), impl.DB) // todo mock
 		if err != nil {
 			c.String(http.StatusInternalServerError, err.Error())
 			return

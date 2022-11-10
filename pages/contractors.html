@@ -58,17 +58,21 @@
                     let contractors = data['contractors']
                     for (i = 0; i < contractors.length; i++) {
                         contractor = contractors[i];
-                        conProjects = contractor.projects
-                        var li = []
-                        conProjects.forEach(function (project) {
-                            li.push('<li id="projectID_'+project.id+'">' 
-                                + '<a href="/project?pid='+project.id+'"">'+project.name+'</a>'+'</li>'); 
-                        }) 
                         tr = '<tr id="contractorId_'+contractor.id+'">' +
                             '<td>'+contractor.name+'</td>' +
-                            '<td>'+contractor.interest+'</td>' +
-                            '<td>'+'<ul>'+li.join(" ")+'</ul>'+'</td>' +    
-                            '</tr>';                             
+                            '<td>'+contractor.interests+'</td>';
+
+                        conProjects = contractor.projects
+                        if (conProjects != null) {
+                            var li = []
+                            conProjects.forEach(function (project) {
+                                li.push('<li id="projectID_'+project.id+'">' 
+                                    + '<a href="/project?pid='+project.id+'"">'+project.name+'</a>'+'</li>'); 
+                            }) 
+                            tr += '<td>'+'<ul>'+li.join(" ")+'</ul>'+'</td>';
+                        }
+                          
+                        tr += '</tr>';                             
                         $('#contractorsTableBody').append(tr);
                     }
 
@@ -82,20 +86,24 @@
                     let contractors = data['contractors']
                     for (i = 0; i < contractors.length; i++) {
                         contractor = contractors[i];
-                        conProjects = contractor.projects
-                        var li = []
-                        conProjects.forEach(function (project) {
-                            li.push('<li id="projectID_'+project.id+'">' 
-                                + '<a href="/project?pid='+project.id+'"">'+project.name+'</a>'+'</li>'); 
-                            if (project.id == pid){
-                                projname = project.name;
-                            };
-                        }) 
                         tr = '<tr id="contractorId_'+contractor.id+'">' +
                             '<td>'+contractor.name+'</td>' +
-                            '<td>'+contractor.interest+'</td>' +
-                            '<td>'+'<ul>'+li.join(" ")+'</ul>'+'</td>' +    
-                            '</tr>';                             
+                            '<td>'+contractor.interests+'</td>';
+
+                        conProjects = contractor.projects
+                        if (conProjects != null) {
+                            var li = []
+                            conProjects.forEach(function (project) {
+                                li.push('<li id="projectID_'+project.id+'">' 
+                                    + '<a href="/project?pid='+project.id+'"">'+project.name+'</a>'+'</li>'); 
+                                if (project.id == pid){
+                                    projname = project.name;
+                                };
+                            }) 
+                            tr += '<td>'+'<ul>'+li.join(" ")+'</ul>'+'</td>';
+                        }
+                          
+                        tr += '</tr>';                             
                         $('#contractorsTableBody').append(tr);
                         
                     }

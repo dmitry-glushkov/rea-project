@@ -38,11 +38,17 @@ func GetInvestors(ctx context.Context, db *pgx.Conn, pid int) ([]Investor, error
 	rows, err := db.Query(
 		ctx,
 		`
-			SELECT u.id, u.name, sum(d.val) as sm
-				FROM users AS u
+			SELECT 
+				inv.id, 
+				inv.name, 
+				inv.interests,
+				coalesce(sum(d.val), 0) as sm, 
+				inv.pids
+				FROM investors AS inv
 				LEFT JOIN investments AS d
-					ON u.id = d.uid
-				WHERE (d.pid = $1 OR $1 = 0);
+					ON inv.id = d.uid
+				WHERE (d.pid = $1 OR $1 = 0)
+				group by inv.id;
 		`,
 		pid,
 	)
@@ -51,13 +57,14 @@ func GetInvestors(ctx context.Context, db *pgx.Conn, pid int) ([]Investor, error
 	}
 	defer rows.Close()
 
-	var invs []Investor
+	var invs []*Investor
 	var pids pq.Int32Array
 	for rows.Next() {
 		var inv Investor
 		err = rows.Scan(
 			&inv.ID,
 			&inv.Name,
+			&inv.Interests,
 			&inv.Total,
 			&inv.Pids,
 		)
@@ -66,7 +73,7 @@ func GetInvestors(ctx context.Context, db *pgx.Conn, pid int) ([]Investor, error
 		}
 
 		pids = append(pids, inv.Pids...)
-		invs = append(invs, inv)
+		invs = append(invs, &inv)
 	}
 
 	var rowsp pgx.Rows
@@ -106,7 +113,12 @@ func GetInvestors(ctx context.Context, db *pgx.Conn, pid int) ([]Investor, error
 		i.Projects = prjs
 	}
 
-	return invs, nil
+	var resp []Investor
+	for _, in := range invs {
+		resp = append(resp, *in)
+	}
+
+	return resp, nil
 }
 
 func GetInvestorsMock(ctx context.Context, db *pgx.Conn, pid int) ([]Investor, error) {

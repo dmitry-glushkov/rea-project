@@ -22,10 +22,10 @@ func (p *Project) Save(ctx context.Context, db *pgx.Conn) error {
 		ctx,
 		`
 			INSERT INTO projects
-				(name, desc, owner)
-				VALUES ($1, $2, $3);
+				(name, decs, owner, target)
+				VALUES ($1, $2, $3, $4);
 		`,
-		p.Name, p.Desc, p.Owner,
+		p.Name, p.Desc, p.Owner, p.Target,
 	)
 	if err != nil {
 		return err
@@ -35,10 +35,10 @@ func (p *Project) Save(ctx context.Context, db *pgx.Conn) error {
 		ctx,
 		`
 		update innovators
-			set pids = array_append(innovators.pids, $1)
+			set pids = array_append(innovators.pids, (select id from projects where name = $1))
 			where name = $2;
 		`,
-		p.ID, p.Owner,
+		p.Name, p.Owner,
 	)
 	return err
 }
@@ -52,8 +52,10 @@ func GetProjects(ctx context.Context, db *pgx.Conn, page, limit int) ([]Project,
 	rows, err := db.Query(
 		ctx,
 		`
-		SELECT id, name, desc, owner_id
-			FROM projects;
+		SELECT p.id, p.name, p.decs, p.owner, p.target, coalesce(sum(inv.val), 0) as sm
+			FROM projects as p
+			left join investments as inv on inv.pid = p.id
+			group by p.id;	
 		`,
 	)
 	if err != nil {
@@ -64,7 +66,14 @@ func GetProjects(ctx context.Context, db *pgx.Conn, page, limit int) ([]Project,
 	var projects []Project
 	for rows.Next() {
 		var project Project
-		err = rows.Scan()
+		err = rows.Scan(
+			&project.ID,
+			&project.Name,
+			&project.Desc,
+			&project.Owner,
+			&project.Target,
+			&project.Sum,
+		)
 		if err != nil {
 			return nil, err
 		}
@@ -79,9 +88,11 @@ func GetProject(ctx context.Context, db *pgx.Conn, pid int) (Project, error) {
 	row := db.QueryRow(
 		ctx,
 		`
-		SELECT id, name, desc, owner
-			FROM projects
-			WHERE id = $1;	
+		SELECT p.id, p.name, p.decs, p.owner, p.target, coalesce(sum(inv.val), 0) as sm
+			FROM projects as p
+			left join investments as inv on inv.pid = p.id
+			WHERE p.id = $1
+			group by p.id;	
 		`,
 		pid,
 	)
@@ -92,6 +103,8 @@ func GetProject(ctx context.Context, db *pgx.Conn, pid int) (Project, error) {
 		&project.Name,
 		&project.Desc,
 		&project.Owner,
+		&project.Target,
+		&project.Sum,
 	)
 	if err != nil {
 		return Project{}, err

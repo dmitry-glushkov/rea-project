@@ -26,6 +26,22 @@
         </div>
     </body>
 
+    <div>
+        <h3 style="text-align: center;">Создать новую экспертизу</h3>
+        <form method="post" style="text-align: center;">
+            <label for="TitleInput">название</label>
+            <input id="TitleInput" type="text"/>
+
+            <label for="DcmInput">содержание</label>
+            <input id="DcmInput" type="text"/>
+
+            <label for="CidInput">исполнитель</label>
+            <input id="CidInput" type="text"/>
+
+            <input type="button" value="Submit" id="SubmitBtn">
+        </form>
+    </div>
+
     <body>
         <div>
             <ul id="contractsList"></ul>
@@ -35,6 +51,7 @@
     <script>
         const urlParams = new URLSearchParams(window.location.search)
         const pid = urlParams.get("pid")
+
         $.get("/api/docs?pid="+pid, function(data) {
             console.log(data);
             if (data.hasOwnProperty('docs')) {
@@ -49,7 +66,20 @@
 
             // TODO заполнить список контрактов с исполнителями (имя исполнителя, задание, документ, дата)
         })
-        
+
+
+        $('#SubmitBtn').on('click', function(){
+            let doc_input = {
+                "pid": Number(pid),
+                "title": $("#TitleInput").val(),
+                "doc": $("#DcmInput").val(),
+                "cid": $("#CidInput").val(),
+            };
+            console.log(doc_input);
+            $.post("/api/create_doc", JSON.stringify(doc_input), function(data){
+                console.log(data);
+            });
+        })
         
     </script>
         
